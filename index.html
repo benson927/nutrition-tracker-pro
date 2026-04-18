@@ -76,6 +76,11 @@
             50% { transform: translateX(8px) translateY(8px); }
         }
 
+        @keyframes pin-shake {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            50% { transform: rotate(10deg) translateY(-5px); }
+        }
+
         h1 {
             font-family: 'Architects Daughter', cursive;
             font-size: 64px;
@@ -497,6 +502,8 @@
             z-index: 10;
             cursor: pointer;
             box-shadow: 3px 3px 0px var(--glass-border);
+            animation: pin-shake 6s ease-in-out infinite;
+            will-change: transform;
         }
 
         .fab-btn:hover {
