@@ -37,12 +37,15 @@
 
 ---
 
-## 📽 如何查看簡報 (Presentation)
+## 📽 開發實錄與展示 (Demo & Presentation)
 
-專案包含一份採用 Liquid Glass 原生設計風格編寫的開發實錄簡報。
+目前專案已透過 GitHub Pages 進行線上展示，您可以直接點擊下方連結觀看：
 
-1. 到專案根目錄。
-2. 開啟 `presentation.html` 檔案即可進行互動式觀看。
+- **🚀 [線上展示入口 (Live Demo)](https://benson927.github.io/nutrition-tracker-pro/)**
+
+### 簡報內容說明：
+1. **投影片展示版 (index.html)**：適合快速了解開發階段與視覺成果。
+2. **詳細技術版 (presentation.html)**：針對系統架構、安全性機制與代碼優化的深度解析。
 
 ---
 
