@@ -356,63 +356,50 @@
             margin-top: 40px; font-size: 14px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
         }
 
-        /* Feature Showcase Gallery - Responsive Aspect Ratios */
-        .feature-showcase {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            margin: 40px 0 60px 0;
-            perspective: 1000px;
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-        }
-
-        .screenshot-card {
-            height: 350px;
+        .btn-gallery {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            backdrop-filter: blur(10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            grid-column: span 2; /* Full width button */
+            margin-top: 10px;
+        }
+        .btn-gallery:hover { 
+            background: rgba(255, 255, 255, 0.12); 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1); 
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Desktop Aspect Ratio (img1, img2) */
-        .screenshot-card.ratio-desktop {
-            aspect-ratio: 16 / 9;
-        }
-
-        /* Mobile Aspect Ratio (img3) */
-        .screenshot-card.ratio-mobile {
-            aspect-ratio: 9 / 11; /* Based on 682x864 */
-            height: 380px; /* Slightly taller to stand out */
-        }
-
-        .screenshot-card img {
+        /* Gallery Slider Styles */
+        .gallery-container {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* High quality fill */
-            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
-
-        .screenshot-card:hover {
-            transform: translateY(-20px) scale(1.05);
-            z-index: 10;
-            border-color: var(--neon-cyan);
-            box-shadow: 0 30px 60px rgba(56, 189, 248, 0.4);
+        .gallery-image {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .screenshot-card {
-                height: 180px;
-            }
-            .screenshot-card.ratio-mobile {
-                height: 200px;
-            }
+        .gallery-image.active {
+            display: block;
+        }
+        .gallery-nav {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 15px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
@@ -423,18 +410,6 @@
             <h1>Nutrition Tracker Pro</h1>
             <h2 style="font-size: 32px; font-weight: 600; margin-top: -5px; margin-bottom: 20px; background: linear-gradient(to right, #e2e8f0, #94a3b8); -webkit-background-clip: text; color: transparent; letter-spacing: 2px;">營養大師：專業熱量追蹤平台</h2>
             
-            <div class="feature-showcase">
-                <div class="screenshot-card ratio-desktop">
-                    <img src="img1.jpg" alt="Dashboard Preview">
-                </div>
-                <div class="screenshot-card ratio-desktop">
-                    <img src="img2.png" alt="Tracking Interface">
-                </div>
-                <div class="screenshot-card ratio-mobile">
-                    <img src="img3.png" alt="Community Forum">
-                </div>
-            </div>
-
             <p class="subtitle">行動平台開發與成果展示入口</p>
             
             <div class="button-grid">
@@ -450,6 +425,9 @@
                 <a href="行動平台影片v2.mp4" target="_blank" onclick="openModal(event, 'video')" class="btn btn-pink">
                     <i class="fa-solid fa-play"></i> 操作演示影片
                 </a>
+                <button onclick="openModal(event, 'gallery')" class="btn btn-gallery">
+                    <i class="fa-solid fa-images"></i> 核心功能介面精選預覽
+                </button>
             </div>
 
             <button class="qr-trigger" onclick="openModal(event, 'qr')">
@@ -638,9 +616,39 @@
                         </div>
                     </div>
                 `;
+            } else if (type === 'gallery') {
+                body.innerHTML = `
+                    <div class="gallery-container">
+                        <img src="img1.jpg" class="gallery-image active" onclick="nextSlide()">
+                        <img src="img2.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img3.png" class="gallery-image" onclick="nextSlide()">
+                        <div class="gallery-nav">
+                            <button onclick="prevSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span style="color: #fff; font-size: 14px;">點擊圖片切換下一張</span>
+                            <button onclick="nextSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                `;
             }
             
             document.getElementById('assetModal').classList.add('active');
+        }
+
+        let currentSlide = 0;
+        function nextSlide() {
+            const slides = document.querySelectorAll('.gallery-image');
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function prevSlide() {
+            const slides = document.querySelectorAll('.gallery-image');
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
         }
 
         function closeModal() {
