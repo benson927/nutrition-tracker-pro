@@ -113,6 +113,11 @@
             50% { transform: scale(1.05) rotate(2deg); }
         }
 
+        @keyframes blink {
+            0%, 15%, 20%, 25%, 100% { transform: scaleY(0); opacity: 0; }
+            17%, 22% { transform: scaleY(1); opacity: 1; }
+        }
+
         h1 {
             font-family: 'Architects Daughter', cursive;
             font-size: 64px;
@@ -571,18 +576,38 @@
             right: 65px;
         }
 
-        /* Moomin Mascot - Enlarged */
-        .moomin-mascot {
+        /* Moomin Mascot - Enlarged & Animated */
+        .moomin-container {
             position: absolute;
             bottom: -30px;
             left: -40px;
             width: 220px;
-            height: auto;
-            mix-blend-mode: multiply;
             z-index: 5;
             pointer-events: none;
             animation: breathe 5s ease-in-out infinite;
             filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.1));
+            mix-blend-mode: multiply;
+        }
+
+        .moomin-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .moomin-eyelid {
+            position: absolute;
+            top: 31%; /* Calibrated to eye position */
+            left: 58%;
+            width: 13px;
+            height: 8px;
+            background: #fdfbf7; /* Parchment white */
+            border-radius: 50%;
+            transform-origin: center;
+            animation: blink 6s ease-in-out infinite;
+            z-index: 6;
+            transform: scaleY(0);
+            border: 0.5px solid rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
@@ -617,8 +642,11 @@
                 <i class="fa-solid fa-scroll"></i>
             </a>
 
-            <!-- Moomin Mascot -->
-            <img src="moomin.png" class="moomin-mascot" alt="Moomin">
+            <!-- Moomin Mascot Component with Blink -->
+            <div class="moomin-container">
+                <div class="moomin-eyelid"></div>
+                <img src="moomin.png" class="moomin-img" alt="Moomin">
+            </div>
             
             <h1>Nutrition Tracker Pro</h1>
             <h2 style="font-size: 28px; font-weight: 600; margin-top: -5px; margin-bottom: 25px; color: var(--text-secondary); letter-spacing: 1px;">營養大師：專業熱量追蹤平台</h2>
