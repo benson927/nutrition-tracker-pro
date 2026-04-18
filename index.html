@@ -616,8 +616,8 @@
                 border-radius: 120px 15px 100px 15px/15px 100px 15px 120px;
             }
             h1 { font-size: 42px; }
-            .subtitle { font-size: 20px; }
-            .button-grid { grid-template-columns: 1fr; }
+            .subtitle { font-size: 18px; margin-bottom: 30px; }
+            .button-grid { grid-template-columns: 1fr; gap: 15px; }
             .dot { width: 6px; height: 6px; }
             .dot.active { width: 16px; }
             .fab-btn {
@@ -627,6 +627,24 @@
                 height: 40px;
             }
             .fab-btn::after { display: none; }
+
+            /* Mobile-specific mascot adjustments */
+            .moomin-container {
+                width: 120px;
+                bottom: -15px;
+                left: -15px;
+                z-index: 1; /* Below buttons */
+            }
+            
+            .qr-trigger {
+                margin-top: 40px;
+                width: 100%;
+                justify-content: center;
+                z-index: 10;
+            }
+            .btn-gallery {
+                z-index: 10;
+            }
         }
     </style>
 </head>
