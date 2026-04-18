@@ -366,32 +366,28 @@
             pageRendering = false,
             pageNumPending = null,
             canvas = null,
-            ctx = null;
+            ctx = null,
+            currentType = null;
 
-        function renderPage(num) {
+        // Render a single page (used in Fullscreen/Slide mode)
+        function renderSinglePage(num) {
             pageRendering = true;
             pdfDoc.getPage(num).then((page) => {
                 const viewport = page.getViewport({ scale: 1 });
-                const containerWidth = document.getElementById('modalBody').clientWidth - 40;
-                const containerHeight = document.getElementById('modalBody').clientHeight - 40;
+                const containerWidth = window.innerWidth - 40;
+                const containerHeight = window.innerHeight - 40;
                 
-                // Calculate scale to fit page exactly to container while maintaining aspect ratio
                 const scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
                 const scaledViewport = page.getViewport({ scale: scale });
 
                 canvas.height = scaledViewport.height;
                 canvas.width = scaledViewport.width;
 
-                const renderContext = {
-                    canvasContext: ctx,
-                    viewport: scaledViewport
-                };
-                const renderTask = page.render(renderContext);
-
-                renderTask.promise.then(() => {
+                const renderContext = { canvasContext: ctx, viewport: scaledViewport };
+                page.render(renderContext).promise.then(() => {
                     pageRendering = false;
                     if (pageNumPending !== null) {
-                        renderPage(pageNumPending);
+                        renderSinglePage(pageNumPending);
                         pageNumPending = null;
                     }
                 });
@@ -402,12 +398,34 @@
             document.getElementById('next-page').disabled = (num >= pdfDoc.numPages);
         }
 
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
+        // Render all pages (used in Normal/Scroll mode)
+        async function renderAllPages() {
+            const body = document.getElementById('modalBody');
+            body.innerHTML = '<div id="scroll-wrapper" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px;"></div>';
+            const wrapper = document.getElementById('scroll-wrapper');
+
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const viewport = page.getViewport({ scale: 1.5 }); // High quality for scrolling
+                const canvas_ = document.createElement('canvas');
+                canvas_.className = 'pdf-scroll-page';
+                canvas_.style.width = '100%';
+                canvas_.style.maxWidth = '1000px';
+                canvas_.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+                canvas_.style.marginBottom = '20px';
+                
+                const context = canvas_.getContext('2d');
+                canvas_.height = viewport.height;
+                canvas_.width = viewport.width;
+
+                await page.render({ canvasContext: context, viewport: viewport }).promise;
+                wrapper.appendChild(canvas_);
             }
+        }
+
+        function queueRenderPage(num) {
+            if (pageRendering) pageNumPending = num;
+            else renderSinglePage(num);
         }
 
         document.getElementById('prev-page').addEventListener('click', () => {
@@ -422,21 +440,33 @@
             queueRenderPage(pageNum);
         });
 
+        // Mode Switching Logic
+        document.addEventListener('fullscreenchange', () => {
+            if (!pdfDoc) return;
+            const controls = document.getElementById('pdfControls');
+            const body = document.getElementById('modalBody');
+
+            if (document.fullscreenElement) {
+                // Fullscreen: Slide Mode
+                body.innerHTML = '<canvas id="pdf-canvas"></canvas>';
+                canvas = document.getElementById('pdf-canvas');
+                ctx = canvas.getContext('2d');
+                controls.style.display = 'flex';
+                renderSinglePage(pageNum);
+            } else {
+                // Return to Normal: Scroll Mode
+                controls.style.display = 'none';
+                renderAllPages();
+            }
+        });
+
         // Keyboard support
         document.addEventListener('keydown', (e) => {
-            if (!document.getElementById('assetModal').classList.contains('active')) return;
+            if (!document.getElementById('assetModal').classList.contains('active') || !document.fullscreenElement) return;
             if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (pdfDoc && pageNum < pdfDoc.numPages) {
-                    pageNum++;
-                    queueRenderPage(pageNum);
-                }
+                if (pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; queueRenderPage(pageNum); }
             } else if (e.key === 'ArrowLeft') {
-                if (pdfDoc && pageNum > 1) {
-                    pageNum--;
-                    queueRenderPage(pageNum);
-                }
-            } else if (e.key === 'Escape') {
-                closeModal();
+                if (pdfDoc && pageNum > 1) { pageNum--; queueRenderPage(pageNum); }
             }
         });
 
@@ -445,11 +475,8 @@
             const isSmallScreen = window.innerWidth <= 1180;
             
             if (isTouchDevice || isSmallScreen) {
-                if (type === 'qr' || type === 'video') {
-                    event.preventDefault();
-                } else {
-                    return;
-                }
+                if (type === 'qr' || type === 'video') event.preventDefault();
+                else return;
             } else {
                 if (type !== 'github') event.preventDefault();
             }
@@ -460,37 +487,28 @@
             const controls = document.getElementById('pdfControls');
             body.innerHTML = '';
             controls.style.display = 'none';
+            currentType = type;
             
             if (type === 'qr') {
-                body.innerHTML = `
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
-                        <img src="qrcode.png" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);">
-                        <h2 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 32px;">即刻體驗</h2>
-                        <p style="color: var(--text-secondary); font-size: 18px;">請掃描 QR Code 隨時同步觀看內容</p>
-                    </div>
-                `;
+                body.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                    <img src="qrcode.png" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);">
+                    <h2 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 32px;">即刻體驗</h2>
+                    <p style="color: var(--text-secondary); font-size: 18px;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
             } else if (type === 'motivation' || type === 'technical') {
                 const pdfUrl = type === 'motivation' ? '行動平台動機與理念簡報.pdf' : '行動平台技術概念簡報.pdf';
-                body.innerHTML = '<canvas id="pdf-canvas"></canvas>';
-                canvas = document.getElementById('pdf-canvas');
-                ctx = canvas.getContext('2d');
-                controls.style.display = 'flex';
+                body.innerHTML = '<div style="color: var(--neon-cyan); font-size: 18px;">載入資源中...</div>';
                 
                 pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc_) => {
                     pdfDoc = pdfDoc_;
                     document.getElementById('page_count').textContent = pdfDoc.numPages;
                     pageNum = 1;
-                    renderPage(pageNum);
+                    renderAllPages(); // Start in scrolling mode
                 });
             } else if (type === 'video') {
-                body.innerHTML = `
-                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <video controls autoplay style="max-height: 80vh; max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                            <source src="行動平台影片v2.mp4" type="video/mp4">
-                        </video>
-                        <h2 style="color: var(--neon-purple); margin-top: 15px; text-align: center; font-size: 24px;">操作演示影片</h2>
-                    </div>
-                `;
+                body.innerHTML = `<div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <video controls autoplay style="max-height: 80vh; max-width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                        <source src="行動平台影片v2.mp4" type="video/mp4"></video>
+                    <h2 style="color: var(--neon-purple); margin-top: 15px; text-align: center; font-size: 24px;">操作演示影片</h2></div>`;
             }
             
             document.getElementById('assetModal').classList.add('active');
@@ -507,9 +525,7 @@
         function toggleFullscreen() {
             const container = document.getElementById('modalContainer');
             if (!document.fullscreenElement) {
-                container.requestFullscreen().then(() => {
-                    if (pdfDoc) setTimeout(() => renderPage(pageNum), 200);
-                });
+                container.requestFullscreen();
             } else {
                 document.exitFullscreen();
             }
