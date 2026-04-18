@@ -225,6 +225,21 @@
             border-radius: 0 !important;
         }
 
+        /* QR Scaling in Fullscreen */
+        .modal-container:fullscreen .qr-image,
+        .modal-container:-webkit-full-screen .qr-image {
+            width: 60vh !important;
+            height: 60vh !important;
+        }
+        .modal-container:fullscreen .qr-title,
+        .modal-container:-webkit-full-screen .qr-title {
+            font-size: 64px !important;
+        }
+        .modal-container:fullscreen .qr-desc,
+        .modal-container:-webkit-full-screen .qr-desc {
+            font-size: 32px !important;
+        }
+
         .modal-body { 
             width: 100%; 
             height: 100%; 
@@ -488,14 +503,14 @@
             const fullscreenBtn = document.querySelector('.fullscreen-btn');
             body.innerHTML = '';
             controls.style.display = 'none';
-            fullscreenBtn.style.display = (type === 'qr') ? 'none' : 'flex';
+            fullscreenBtn.style.display = 'flex'; // Enable fullscreen for all assets
             currentType = type;
             
             if (type === 'qr') {
                 body.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
-                    <img src="qrcode.png" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);">
-                    <h2 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 32px;">即刻體驗</h2>
-                    <p style="color: var(--text-secondary); font-size: 18px;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
+                    <img src="qrcode.png" class="qr-image" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); transition: all 0.4s ease;">
+                    <h2 class="qr-title" style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 32px; transition: all 0.4s ease;">即刻體驗</h2>
+                    <p class="qr-desc" style="color: var(--text-secondary); font-size: 18px; transition: all 0.4s ease;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
             } else if (type === 'motivation' || type === 'technical') {
                 const pdfUrl = type === 'motivation' ? '行動平台動機與理念簡報.pdf' : '行動平台技術概念簡報.pdf';
                 body.innerHTML = '<div style="color: var(--neon-cyan); font-size: 18px;">載入資源中...</div>';
