@@ -300,21 +300,30 @@
         .pdf-btn:hover { opacity: 1; transform: scale(1.2); color: var(--neon-cyan); }
         .pdf-btn:disabled { opacity: 0.2; cursor: not-allowed; }
         
-        #page-num-display { font-size: 14px; min-width: 60px; color: var(--text-se        .modal-header-actions {
+        .modal-header-actions {
             position: absolute;
             top: 25px;
             right: 25px;
             display: flex;
             gap: 12px;
-            z-index: 100;
+            z-index: 1000;
+        }
+
+        /* Essential: Maintain button position in Fullscreen */
+        .modal-container:fullscreen .modal-header-actions,
+        .modal-container:-webkit-full-screen .modal-header-actions {
+            position: fixed !important;
+            top: 25px !important;
+            right: 25px !important;
         }
 
         .action-btn {
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
             cursor: pointer;
             display: flex;
@@ -325,19 +334,19 @@
         }
 
         .action-btn:hover {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.3);
             transform: scale(1.1);
         }
 
         .btn-close:hover {
-            background: rgba(239, 68, 68, 0.4);
-            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.6) !important;
+            border-color: #ef4444 !important;
         }
         
         .btn-fullscreen:hover {
-            background: rgba(56, 189, 248, 0.4);
-            border-color: var(--neon-cyan);
-        }eon-cyan); }
+            background: rgba(56, 189, 248, 0.6) !important;
+            border-color: var(--neon-cyan) !important;
+        }
 
         .copyright {
             margin-top: 40px; font-size: 14px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
