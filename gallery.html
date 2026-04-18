@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tracker Pro - 產品介面精選預覽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --neon-cyan: #38bdf8;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 { font-size: 20px; margin: 0; color: var(--neon-cyan); letter-spacing: 1px; }
+        .gallery-list {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .gallery-item {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .info {
+            padding: 15px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .back-btn {
+            margin-top: 30px;
+            margin-bottom: 50px;
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>產品介面精選預覽</h1>
+    </header>
+    
+    <div class="gallery-list">
+        <div class="gallery-item"><img src="img4.jpg" alt="Profile Setting"></div>
+        <div class="gallery-item"><img src="img5.jpg" alt="Forum/Logout"></div>
+        <div class="gallery-item"><img src="img1.jpg" alt="Dashboard"></div>
+        <div class="gallery-item"><img src="img2.png" alt="Tracking"></div>
+        <div class="gallery-item"><img src="img7.jpg" alt="Feature highlight"></div>
+        <div class="gallery-item"><img src="img6.jpg" alt="Last preview"></div>
+    </div>
+
+    <div class="info">請在圖片上雙指縮放查看細節</div>
+    
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> 返回展示入口</a>
+</body>
+</html>
