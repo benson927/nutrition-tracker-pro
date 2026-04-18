@@ -71,6 +71,11 @@
             50% { transform: translateY(-15px) rotate(1.5deg); }
         }
 
+        @keyframes drop {
+            0%, 100% { transform: translateX(-8px) translateY(8px); }
+            50% { transform: translateX(8px) translateY(8px); }
+        }
+
         h1 {
             font-family: 'Architects Daughter', cursive;
             font-size: 64px;
@@ -79,6 +84,9 @@
             color: var(--text-main);
             letter-spacing: -1px;
             line-height: 1.1;
+            display: inline-block;
+            animation: drop 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            will-change: transform;
         }
 
         .subtitle {
