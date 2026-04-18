@@ -343,6 +343,10 @@
             border-color: #ef4444 !important;
         }
         
+        .btn-fullscreen {
+            display: none; /* Hidden by default to prevent flashing */
+        }
+        
         .btn-fullscreen:hover {
             background: rgba(56, 189, 248, 0.6) !important;
             border-color: var(--neon-cyan) !important;
@@ -535,7 +539,9 @@
             const fullscreenBtn = document.getElementById('fullscreenBtn');
             body.innerHTML = '';
             controls.style.display = 'none';
-            fullscreenBtn.style.display = 'flex'; // Default show
+            
+            // Only show custom fullscreen button for Presentations
+            fullscreenBtn.style.display = (type === 'motivation' || type === 'technical') ? 'flex' : 'none';
             currentType = type;
             
             if (type === 'qr') {
