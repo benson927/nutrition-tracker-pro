@@ -187,20 +187,46 @@
             transition: all 0.3s ease;
         }
         
-        /* Fullscreen specific overrides */
-        .modal-container:fullscreen {
+        /* Fullscreen specific overrides - Comprehensive Support */
+        .modal-container:fullscreen,
+        .modal-container:-webkit-full-screen,
+        .modal-container:-moz-full-screen,
+        .modal-container:-ms-fullscreen {
             width: 100vw !important;
             height: 100vh !important;
             max-width: none !important;
             max-height: none !important;
             padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
             border-radius: 0 !important;
-            background: #000;
+            background: #000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* Force internal elements to fill 100% in fullscreen */
+        .modal-container:fullscreen .modal-body,
+        .modal-container:-webkit-full-screen .modal-body {
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+        }
+
+        .modal-container:fullscreen iframe,
+        .modal-container:-webkit-full-screen iframe,
+        .modal-container:fullscreen video,
+        .modal-container:-webkit-full-screen video {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+            border-radius: 0 !important;
         }
 
         .modal-body { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         
-        /* Ensure iframe and video fill the space */
+        /* Default behaviors for iframe and video */
         .modal-body iframe, .modal-body video {
             width: 100%;
             height: 100%;
