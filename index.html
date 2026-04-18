@@ -395,11 +395,28 @@
             position: absolute;
             bottom: 20px;
             display: flex;
-            gap: 15px;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 25px;
+            border-radius: 40px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Pagination Dots */
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            width: 24px;
+            border-radius: 10px;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
     </style>
 </head>
@@ -622,11 +639,20 @@
                         <img src="img1.jpg" class="gallery-image active" onclick="nextSlide()">
                         <img src="img2.png" class="gallery-image" onclick="nextSlide()">
                         <img src="img3.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img4.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img5.png" class="gallery-image" onclick="nextSlide()">
                         <div class="gallery-nav">
                             <button onclick="prevSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                            <span style="color: #fff; font-size: 14px;">點擊圖片切換下一張</span>
+                            <div id="dot-container" style="display: flex; gap: 8px;">
+                                <div class="dot active"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
                             <button onclick="nextSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 15px;">點擊圖片或使用箭頭切換亮點 (5張精選)</p>
                     </div>
                 `;
             }
@@ -635,12 +661,20 @@
         }
 
         let currentSlide = 0;
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
         function nextSlide() {
             const slides = document.querySelectorAll('.gallery-image');
             if (slides.length === 0) return;
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
+            updateDots();
         }
 
         function prevSlide() {
@@ -649,6 +683,7 @@
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
+            updateDots();
         }
 
         function closeModal() {
