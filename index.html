@@ -191,9 +191,18 @@
             width: 44px; height: 44px; border-radius: 50%;
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
             color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 20px; transition: all 0.3s ease;
+            font-size: 20px; transition: all 0.3s ease; z-index: 10;
         }
         .close-btn:hover { background: rgba(239, 68, 68, 0.4); border-color: #ef4444; }
+
+        .fullscreen-btn {
+            position: absolute; top: 25px; right: 80px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: all 0.3s ease; z-index: 10;
+        }
+        .fullscreen-btn:hover { background: rgba(56, 189, 248, 0.4); border-color: var(--neon-cyan); }
 
         .copyright {
             margin-top: 40px; font-size: 14px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
@@ -234,7 +243,8 @@
 
     <!-- Universal Modal -->
     <div id="assetModal" class="modal" onclick="closeModal()">
-        <div class="modal-container" onclick="event.stopPropagation()">
+        <div id="modalContainer" class="modal-container" onclick="event.stopPropagation()">
+            <button class="fullscreen-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
             <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             <div id="modalBody" class="modal-body">
                 <!-- Content Injected via JS -->
@@ -300,6 +310,20 @@
         function closeModal() {
             document.getElementById('assetModal').classList.remove('active');
             document.getElementById('modalBody').innerHTML = '';
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+
+        function toggleFullscreen() {
+            const container = document.getElementById('modalContainer');
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    console.error(`Fullscreen error: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
         }
     </script>
 
