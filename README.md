@@ -72,4 +72,4 @@ https://github.com/benson927/nutrition-tracker-pro/assets/demo_video.mov
 
 ## 📄 授權 (License)
 
-MIT License. Developed with ❤️ by Antigravity.
+© 2026 Benson Hong. All Rights Reserved.
