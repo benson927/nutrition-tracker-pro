@@ -606,7 +606,10 @@
             const isSmallScreen = window.innerWidth <= 1180;
             
             if (isTouchDevice || isSmallScreen) {
-                if (type === 'qr' || type === 'video' || type === 'gallery') event.preventDefault();
+                // For gallery on mobile, let the <a> tag handle navigation to gallery.html
+                if (type === 'gallery') return; 
+                
+                if (type === 'qr' || type === 'video') event.preventDefault();
                 else return;
             } else {
                 if (type !== 'github') event.preventDefault();
