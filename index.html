@@ -636,11 +636,11 @@
             } else if (type === 'gallery') {
                 body.innerHTML = `
                     <div class="gallery-container">
-                        <img src="img1.jpg" class="gallery-image active" onclick="nextSlide()">
-                        <img src="img2.png" class="gallery-image" onclick="nextSlide()">
-                        <img src="img3.png" class="gallery-image" onclick="nextSlide()">
-                        <img src="img4.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img4.png" class="gallery-image active" onclick="nextSlide()">
                         <img src="img5.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img1.jpg" class="gallery-image" onclick="nextSlide()">
+                        <img src="img2.png" class="gallery-image" onclick="nextSlide()">
+                        <img src="img6.png" class="gallery-image" onclick="nextSlide()">
                         <div class="gallery-nav">
                             <button onclick="prevSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-left"></i></button>
                             <div id="dot-container" style="display: flex; gap: 8px;">
@@ -652,7 +652,7 @@
                             </div>
                             <button onclick="nextSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
-                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 15px;">點擊圖片或使用箭頭切換亮點 (5張精選)</p>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 15px;">點擊圖片或使用箭頭切換亮點 (精選 5 張)</p>
                     </div>
                 `;
             }
