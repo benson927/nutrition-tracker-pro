@@ -178,13 +178,14 @@
         .modal.active { display: flex; animation: fadeIn 0.4s ease; }
         .modal-container {
             width: 90%; max-width: 1200px; height: 85vh;
-            background: var(--bg-color); 
-            border: 3px solid var(--glass-border);
-            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px; /* Inverted sketchy shape */
+            background: #2d3436; /* Match QR button deep ink color */
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
             position: relative; padding: 40px;
             display: flex; flex-direction: column; align-items: center;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.1);
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
+            color: var(--bg-color); /* Invert text to light */
         }
         
         /* Fullscreen specific overrides - Comprehensive Support */
@@ -252,8 +253,8 @@
             width: 46px; 
             height: 46px; 
             border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%;
-            background: var(--glass-border); 
-            border: 2px solid var(--glass-border);
+            background: rgba(255,255,255,0.1); 
+            border: 2px solid rgba(255,255,255,0.3);
             color: #fff !important; 
             display: flex; 
             align-items: center; 
@@ -261,12 +262,12 @@
             cursor: pointer; 
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-size: 20px; 
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
         }
         .action-btn:hover {
             transform: scale(1.15) rotate(8deg);
-            background: #222;
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.6);
             border-color: var(--neon-cyan);
         }
         .action-btn i { color: #fff !important; }
@@ -278,6 +279,7 @@
             justify-content: center; 
             align-items: flex-start; /* Align to top for snapping */
             overflow-y: auto;
+            color: #fff;
             scroll-snap-type: y mandatory; /* Force snapping to pages */
             -webkit-overflow-scrolling: touch;
         }
@@ -315,13 +317,14 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 25px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 20;
-            transition: opacity 0.3s;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            color: #fff;
+            font-family: 'Gaegu', cursive;
         }
         
         .pdf-btn {
