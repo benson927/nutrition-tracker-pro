@@ -68,28 +68,27 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        /* Hand-drawn Thumbtack */
+        /* Hand-drawn Thumbtack - Enlarged */
         .thumbtack {
             position: absolute;
-            top: -20px;
+            top: -28px;
             left: 50%;
             transform: translateX(-50%);
-            width: 32px;
-            height: 32px;
+            width: 44px;
+            height: 44px;
             background: #ff7675;
-            border: 2px solid var(--border-ink);
+            border: 3px solid var(--border-ink);
             border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%;
             z-index: 20;
-            box-shadow: 2px 4px 0px rgba(0,0,0,0.2);
+            box-shadow: 3px 6px 0px rgba(0,0,0,0.2);
         }
         .thumbtack::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
+            top: 25%;
+            left: 25%;
+            width: 12px;
+            height: 12px;
             background: rgba(255,255,255,0.4);
             border-radius: 50%;
         }
