@@ -239,6 +239,38 @@
             font-size: 32px !important;
         }
 
+        /* Modal Header Actions - High Visibility Sketch */
+        .modal-header-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 15px;
+            z-index: 1010;
+        }
+        .action-btn {
+            width: 46px; 
+            height: 46px; 
+            border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%;
+            background: var(--glass-border); 
+            border: 2px solid var(--glass-border);
+            color: #fff !important; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 20px; 
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+        }
+        .action-btn:hover {
+            transform: scale(1.15) rotate(8deg);
+            background: #222;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
+            border-color: var(--neon-cyan);
+        }
+        .action-btn i { color: #fff !important; }
+
         .modal-body { 
             width: 100%; 
             height: 100%; 
