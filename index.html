@@ -418,6 +418,21 @@
             background: var(--neon-cyan);
             box-shadow: 0 0 10px var(--neon-cyan);
         }
+
+        @media (max-width: 768px) {
+            .gallery-image {
+                max-width: 95%;
+                max-height: 60vh;
+                border-radius: 15px;
+            }
+            .gallery-nav {
+                bottom: 10px;
+                padding: 8px 15px;
+                gap: 12px;
+            }
+            .dot { width: 6px; height: 6px; }
+            .dot.active { width: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -591,7 +606,7 @@
             const isSmallScreen = window.innerWidth <= 1180;
             
             if (isTouchDevice || isSmallScreen) {
-                if (type === 'qr' || type === 'video') event.preventDefault();
+                if (type === 'qr' || type === 'video' || type === 'gallery') event.preventDefault();
                 else return;
             } else {
                 if (type !== 'github') event.preventDefault();
