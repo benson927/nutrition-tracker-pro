@@ -540,8 +540,8 @@
             body.innerHTML = '';
             controls.style.display = 'none';
             
-            // Only show custom fullscreen button for Presentations
-            fullscreenBtn.style.display = (type === 'motivation' || type === 'technical') ? 'flex' : 'none';
+            // Show fullscreen button for QR and Presentations, hide for Video
+            fullscreenBtn.style.display = (type === 'video') ? 'none' : 'flex';
             currentType = type;
             
             if (type === 'qr') {
