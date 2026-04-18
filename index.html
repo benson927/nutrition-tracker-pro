@@ -114,8 +114,8 @@
         }
 
         @keyframes blink {
-            0%, 15%, 20%, 25%, 100% { transform: scaleY(0); opacity: 0; }
-            17%, 22% { transform: scaleY(1); opacity: 1; }
+            0%, 5%, 15%, 25%, 100% { transform: scaleY(0); opacity: 0; }
+            8%, 12%, 18%, 22% { transform: scaleY(1.2); opacity: 1; }
         }
 
         h1 {
@@ -597,17 +597,17 @@
 
         .moomin-eyelid {
             position: absolute;
-            top: 31%; /* Calibrated to eye position */
-            left: 58%;
-            width: 13px;
-            height: 8px;
-            background: #fdfbf7; /* Parchment white */
+            top: 29.5%; /* Fine-tuned for better coverage */
+            left: 57.5%;
+            width: 15px; /* Slightly wider for better visibility */
+            height: 9px;
+            background: #fdfbf7; 
             border-radius: 50%;
             transform-origin: center;
-            animation: blink 6s ease-in-out infinite;
+            animation: blink 3.5s ease-in-out infinite;
             z-index: 6;
             transform: scaleY(0);
-            border: 0.5px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.2); /* Sharper border for clearer blink */
         }
 
         @media (max-width: 768px) {
