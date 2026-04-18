@@ -544,24 +544,25 @@
             color: var(--glass-border);
         }
 
-        /* Tooltip style */
+        /* Tooltip style - Permanently Visible */
         .fab-btn::after {
             content: "開發歷程";
             position: absolute;
-            right: 55px;
+            right: 60px;
             background: var(--glass-border);
             padding: 4px 12px;
             border-radius: 5px;
             font-size: 13px;
             white-space: nowrap;
-            opacity: 0;
+            opacity: 1; /* Always visible */
             pointer-events: none;
             transition: all 0.3s ease;
             color: #fff;
             font-family: 'Gaegu', cursive;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
         }
         .fab-btn:hover::after {
-            opacity: 1;
+            transform: scale(1.05);
             right: 65px;
         }
 
