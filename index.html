@@ -539,9 +539,7 @@
             const fullscreenBtn = document.getElementById('fullscreenBtn');
             body.innerHTML = '';
             controls.style.display = 'none';
-            
-            // Show fullscreen button for QR and Presentations, hide for Video
-            fullscreenBtn.style.display = (type === 'video') ? 'none' : 'flex';
+            fullscreenBtn.style.display = 'flex'; // Restore for all types (QR, PDF, Video)
             currentType = type;
             
             if (type === 'qr') {
