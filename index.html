@@ -487,6 +487,11 @@
         </div>
     </div>
 
+    <!-- Floating Action Button -->
+    <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn">
+        <i class="fa-solid fa-scroll"></i> <span>開發歷程紀錄</span>
+    </a>
+
     <!-- Universal Modal -->
     <div id="assetModal" class="modal" onclick="closeModal()">
         <div id="modalContainer" class="modal-container" onclick="event.stopPropagation()">
@@ -656,8 +661,12 @@
                     <img src="qrcode.png" class="qr-image" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); transition: all 0.4s ease;">
                     <h2 class="qr-title" style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 32px; transition: all 0.4s ease;">即刻體驗</h2>
                     <p class="qr-desc" style="color: var(--text-secondary); font-size: 18px; transition: all 0.4s ease;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
-            } else if (type === 'motivation' || type === 'technical') {
-                const pdfUrl = type === 'motivation' ? '行動平台動機與理念簡報.pdf' : '行動平台技術概念簡報.pdf';
+            } else if (type === 'motivation' || type === 'technical' || type === 'history') {
+                let pdfUrl;
+                if (type === 'motivation') pdfUrl = '行動平台動機與理念簡報.pdf';
+                else if (type === 'technical') pdfUrl = '行動平台技術概念簡報.pdf';
+                else pdfUrl = '開發過程經歷簡報.pdf';
+                
                 body.innerHTML = '<div style="color: var(--neon-cyan); font-size: 18px;">載入資源中...</div>';
                 
                 pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc_) => {
