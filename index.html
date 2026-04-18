@@ -436,6 +436,60 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
+        /* Floating Action Button - Top Right Compact */
+        .fab-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--neon-cyan);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .fab-btn i {
+            font-size: 18px;
+            color: var(--neon-cyan);
+        }
+
+        /* Tooltip style */
+        .fab-btn::after {
+            content: "開發歷程紀錄";
+            position: absolute;
+            right: 55px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+        .fab-btn:hover::after {
+            opacity: 1;
+            right: 60px;
+        }
+
         @media (max-width: 768px) {
             .gallery-image {
                 max-width: 95%;
@@ -449,6 +503,11 @@
             }
             .dot { width: 6px; height: 6px; }
             .dot.active { width: 16px; }
+            .fab-btn {
+                top: 20px;
+                right: 20px;
+            }
+            .fab-btn::after { display: none; }
         }
     </style>
 </head>
@@ -488,8 +547,8 @@
     </div>
 
     <!-- Floating Action Button -->
-    <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn">
-        <i class="fa-solid fa-scroll"></i> <span>開發歷程紀錄</span>
+    <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
+        <i class="fa-solid fa-scroll"></i>
     </a>
 
     <!-- Universal Modal -->
