@@ -30,6 +30,7 @@
                 linear-gradient(var(--paper-grid) 1px, transparent 1px),
                 linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
             background-size: 30px 30px;
+            background-attachment: fixed;
             color: var(--text-main);
             font-family: 'Gaegu', 'Inter', sans-serif;
             min-height: 100vh;
@@ -38,6 +39,7 @@
             align-items: center;
             padding: 20px;
             position: relative;
+            overflow-x: hidden;
             overflow-y: auto;
         }
 
@@ -65,8 +67,8 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-0.2deg); }
-            50% { transform: translateY(-5px) rotate(0.2deg); }
+            0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+            50% { transform: translateY(-15px) rotate(1.5deg); }
         }
 
         h1 {
