@@ -356,85 +356,62 @@
             margin-top: 40px; font-size: 14px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
         }
 
-        /* Feature Showcase Gallery */
+        /* Feature Showcase Gallery - Responsive Aspect Ratios */
         .feature-showcase {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 25px;
             margin: 40px 0 60px 0;
             perspective: 1000px;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
         }
 
         .screenshot-card {
-            width: 220px;
-            height: 440px;
-            background: var(--glass-bg);
+            height: 350px;
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            border-radius: 24px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
-            transform: rotateY(-10deg) translateZ(0);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Desktop Aspect Ratio (img1, img2) */
+        .screenshot-card.ratio-desktop {
+            aspect-ratio: 16 / 9;
+        }
+
+        /* Mobile Aspect Ratio (img3) */
+        .screenshot-card.ratio-mobile {
+            aspect-ratio: 9 / 11; /* Based on 682x864 */
+            height: 380px; /* Slightly taller to stand out */
         }
 
         .screenshot-card img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: brightness(0.9);
-            transition: all 0.6s ease;
-        }
-
-        .screenshot-card:nth-child(2) {
-            transform: translateY(-20px) translateZ(50px);
-            z-index: 2;
-            width: 240px;
-            height: 480px;
+            object-fit: cover; /* High quality fill */
+            transition: all 0.5s ease;
         }
 
         .screenshot-card:hover {
-            transform: translateY(-30px) rotateY(0) scale(1.05) translateZ(100px);
+            transform: translateY(-20px) scale(1.05);
             z-index: 10;
             border-color: var(--neon-cyan);
-            box-shadow: 0 30px 60px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 30px 60px rgba(56, 189, 248, 0.4);
         }
 
-        .screenshot-card:hover img {
-            filter: brightness(1.1);
-        }
-
-        /* Ambient floating animation */
-        @keyframes floating {
-            0%, 100% { transform: translateY(0) rotateY(-10deg); }
-            50% { transform: translateY(-15px) rotateY(-5deg); }
-        }
-        @keyframes floating-center {
-            0%, 100% { transform: translateY(-20px) translateZ(50px); }
-            50% { transform: translateY(-35px) translateZ(70px); }
-        }
-
-        .screenshot-card:first-child { animation: floating 6s ease-in-out infinite; }
-        .screenshot-card:nth-child(2) { animation: floating-center 6s ease-in-out infinite 1s; }
-        .screenshot-card:last-child { animation: floating 6s ease-in-out infinite 2s; transform: rotateY(10deg); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .feature-showcase {
-                gap: 15px;
-                margin: 30px 0;
-            }
             .screenshot-card {
-                width: 100px;
-                height: 200px;
-                border-radius: 15px;
+                height: 180px;
             }
-            .screenshot-card:nth-child(2) {
-                width: 120px;
-                height: 240px;
+            .screenshot-card.ratio-mobile {
+                height: 200px;
             }
         }
     </style>
@@ -447,13 +424,13 @@
             <h2 style="font-size: 32px; font-weight: 600; margin-top: -5px; margin-bottom: 20px; background: linear-gradient(to right, #e2e8f0, #94a3b8); -webkit-background-clip: text; color: transparent; letter-spacing: 2px;">營養大師：專業熱量追蹤平台</h2>
             
             <div class="feature-showcase">
-                <div class="screenshot-card">
+                <div class="screenshot-card ratio-desktop">
                     <img src="img1.jpg" alt="Dashboard Preview">
                 </div>
-                <div class="screenshot-card">
+                <div class="screenshot-card ratio-desktop">
                     <img src="img2.png" alt="Tracking Interface">
                 </div>
-                <div class="screenshot-card">
+                <div class="screenshot-card ratio-mobile">
                     <img src="img3.png" alt="Community Forum">
                 </div>
             </div>
