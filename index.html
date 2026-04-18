@@ -244,10 +244,11 @@
 
     <script>
         function openModal(type) {
-        const isMobile = window.innerWidth <= 768;
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isSmallScreen = window.innerWidth <= 1024; // Cover tablets & phones
         
-        // On mobile, open PDFs and presentation in a new tab for better UX
-        if (isMobile && (type === 'motivation' || type === 'technical' || type === 'detail')) {
+        // On mobile/tablets, open PDFs and external links in a new tab for native viewer support
+        if ((isTouchDevice || isSmallScreen) && (type === 'motivation' || type === 'technical' || type === 'detail')) {
             const urls = {
                 'motivation': '行動平台動機與理念簡報.pdf',
                 'technical': '行動平台技術概念簡報.pdf',
