@@ -28,8 +28,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            padding: 20px;
             position: relative;
+            overflow-x: hidden;
+            overflow-y: auto; /* Allow scrolling on small screens */
         }
 
         /* Ambient Background Shadows */
@@ -43,7 +45,7 @@
         }
 
         .main-container {
-            width: 90%;
+            width: 100%;
             max-width: 1000px;
             z-index: 1;
             text-align: center;
@@ -57,6 +59,7 @@
             border-radius: 40px;
             padding: 80px 60px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
         }
 
         h1 {
@@ -67,6 +70,7 @@
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: -1px;
+            line-height: 1.1;
         }
 
         .subtitle {
@@ -96,6 +100,41 @@
             gap: 12px;
             text-decoration: none;
             border: 1px solid transparent;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .glass-card {
+                padding: 40px 25px;
+                border-radius: 30px;
+            }
+            h1 {
+                font-size: 38px;
+            }
+            .subtitle {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
+            .button-grid {
+                grid-template-columns: 1fr; /* Stack buttons vertically */
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+            .btn {
+                padding: 18px 20px;
+                font-size: 16px;
+            }
+            .modal-container {
+                padding: 15px;
+                width: 95%;
+                height: 80vh;
+            }
+            .close-btn {
+                top: 15px;
+                right: 15px;
+                width: 36px;
+                height: 36px;
+            }
         }
 
         .btn-blue {
