@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tracker Pro - 定製化開發簡報</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Liquid Glass Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-2 {
+            top: 20%;
+            right: -10%;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            bottom: -10%;
+            left: 10%;
+            background: radial-gradient(circle, var(--accent-emerald) 0%, transparent 70%);
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 60px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .hero-desc {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-item {
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .feature-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-item p {
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: var(--accent-blue);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            .glass-card { padding: 40px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container fade-in">
+        <div class="glass-card">
+            <span class="tagline">Development Showcase</span>
+            <h1>Nutrition Tracker Pro</h1>
+            <p class="hero-desc">
+                一款專為追求極致的使用者設計的健康管理系統。將複雜的數據轉化為純淨、直觀的視覺體驗，讓追蹤不再是負擔。
+            </p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-value">Liquid</span>
+                    <span class="stat-label">Aesthetics</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">Real-time</span>
+                    <span class="stat-label">Feedback</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">Secure</span>
+                    <span class="stat-label">Clean Start</span>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>💎 頂級視覺哲學</h3>
+                    <p>全面導入 Liquid Glass 設計語彙，深邃純黑與呼吸感光暈結合，營造出目前最先進的 Web UI 質感。</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📊 智慧數據平衡</h3>
+                    <p>重新定義 Dashboard 排版。對智慧推薦列表加入絲滑的半透明微型滾動條，確保數據展示與視覺比例達到完美平衡。</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🎯 網格化新手引導</h3>
+                    <p>重構 Profile 表單至 3x2 完美對稱網格。支援 RWD 自適應，讓首次設定流程變得像精品一樣精緻。</p>
+                </div>
+                <div class="feature-item">
+                    <h3>💬 凍結式權限機制</h3>
+                    <p>徹底解決論壇作者歸屬問題。發文當下的身分將被永久「凍結」，確保社群足跡真實、不可篡改。</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🚪 全局安全門禁</h3>
+                    <p>新增一鍵全局登出功能，結合 SweetAlert2 進行安全驗證與 Session 清空，給予使用者最安心的隱私保護。</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ 極致代碼品質</h3>
+                    <p>從舊有的 Git 沉痾中重生。移除所有開發過程中的測試數據與舊歷史，提供一個最純淨、最高效的生產環境。</p>
+                </div>
+            </div>
+
+            <a href="https://github.com/benson927/nutrition-tracker-pro.git" class="btn">前往 GitHub 儲存庫</a>
+        </div>
+
+        <footer>
+            &copy; 2026 Nutrition Tracker Pro. Developed with ❤️ by Antigravity.
+        </footer>
+    </div>
+</body>
+</html>
