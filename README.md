@@ -51,9 +51,9 @@
 ### 🎬 功能演示影片 (Feature Demo)
 如果您想快速了解系統的操作流程，請觀看下方的實機錄影：
 
-https://github.com/benson927/nutrition-tracker-pro/assets/demo_video.mov
+https://github.com/benson927/nutrition-tracker-pro/assets/行動平台影片.mp4
 
-> (註：若 GitHub 預覽未正常顯示，請直接查看 [demo_video.mov](./demo_video.mov) 檔案)
+> (註：若 GitHub 預覽未正常顯示，請直接查看 [行動平台影片.mp4](./行動平台影片.mp4) 檔案)
 
 ### 簡報內容說明：
 1. **投影片展示版 (index.html)**：適合快速了解開發階段與視覺成果。
