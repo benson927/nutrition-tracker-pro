@@ -108,6 +108,11 @@
             50% { transform: rotate(10deg) translateY(-5px); }
         }
 
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(2deg); }
+        }
+
         h1 {
             font-family: 'Architects Daughter', cursive;
             font-size: 64px;
@@ -566,6 +571,19 @@
             right: 65px;
         }
 
+        /* Moomin Mascot */
+        .moomin-mascot {
+            position: absolute;
+            bottom: -15px;
+            left: -20px;
+            width: 140px;
+            height: auto;
+            mix-blend-mode: multiply;
+            z-index: 5;
+            pointer-events: none;
+            animation: breathe 5s ease-in-out infinite;
+        }
+
         @media (max-width: 768px) {
             .glass-card {
                 padding: 40px 20px;
@@ -597,6 +615,10 @@
             <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
                 <i class="fa-solid fa-scroll"></i>
             </a>
+
+            <!-- Moomin Mascot -->
+            <img src="handdrawn_moomin_style_character_1776554039715.png" class="moomin-mascot" alt="Moomin">
+            
             <h1>Nutrition Tracker Pro</h1>
             <h2 style="font-size: 28px; font-weight: 600; margin-top: -5px; margin-bottom: 25px; color: var(--text-secondary); letter-spacing: 1px;">營養大師：專業熱量追蹤平台</h2>
             
