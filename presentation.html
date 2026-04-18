@@ -170,6 +170,21 @@
             letter-spacing: 2px;
         }
 
+        .screenshot {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-blue);
+        }
+
         footer {
             text-align: center;
             padding: 40px;
@@ -234,16 +249,21 @@
 
             <div class="feature-grid">
                 <div class="feature-item">
-                    <h3>💎 頂級視覺哲學</h3>
+                    <h3>💎 Phase 1: Visual Exploration</h3>
                     <p>全面導入 Liquid Glass 設計語彙，深邃純黑與呼吸感光暈結合，營造出目前最先進的 Web UI 質感。</p>
+                    <img src="img1.jpg" alt="Phase 1 Dashboard Screenshot" class="screenshot">
                 </div>
                 <div class="feature-item">
                     <h3>📊 智慧數據平衡</h3>
                     <p>重新定義 Dashboard 排版。對智慧推薦列表加入絲滑的半透明微型滾動條，確保數據展示與視覺比例達到完美平衡。</p>
                 </div>
                 <div class="feature-item">
-                    <h3>🎯 網格化新手引導</h3>
+                    <h3>🎯 Phase 3: Performance Pivot</h3>
                     <p>重構 Profile 表單至 3x2 完美對稱網格。支援 RWD 自適應，讓首次設定流程變得像精品一樣精緻。</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <img src="img2.png" alt="Performance Verification A" class="screenshot">
+                        <img src="img3.png" alt="Performance Verification B" class="screenshot">
+                    </div>
                 </div>
                 <div class="feature-item">
                     <h3>💬 凍結式權限機制</h3>
