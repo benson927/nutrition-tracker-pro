@@ -61,14 +61,42 @@
             /* Hand-drawn irregular border */
             border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             padding: 80px 60px;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.05); /* Sketchy flat shadow */
+            box-shadow: 10px 15px 0px rgba(0,0,0,0.05);
             width: 100%;
+            position: relative;
+            transform-origin: top center; /* Physical pivot point */
             animation: float 6s ease-in-out infinite;
         }
 
+        /* Hand-drawn Thumbtack */
+        .thumbtack {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 32px;
+            background: #ff7675;
+            border: 2px solid var(--border-ink);
+            border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%;
+            z-index: 20;
+            box-shadow: 2px 4px 0px rgba(0,0,0,0.2);
+        }
+        .thumbtack::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+        }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-            50% { transform: translateY(-15px) rotate(1.5deg); }
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(5px) rotate(2deg); }
         }
 
         @keyframes drop {
@@ -562,6 +590,9 @@
 
     <div class="main-container">
         <div class="glass-card">
+            <!-- Thumbtack at the top -->
+            <div class="thumbtack"></div>
+            
             <!-- Development History Button -->
             <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
                 <i class="fa-solid fa-scroll"></i>
