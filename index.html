@@ -436,49 +436,48 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Floating Action Button - Top Right Compact */
+        /* Developmental History Button - Inside Glass Card */
         .fab-btn {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
             text-decoration: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
+            z-index: 10;
             cursor: pointer;
         }
 
         .fab-btn:hover {
-            transform: scale(1.1) rotate(15deg);
+            transform: scale(1.1) rotate(10deg);
             border-color: var(--neon-cyan);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
         }
 
         .fab-btn i {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--neon-cyan);
         }
 
         /* Tooltip style */
         .fab-btn::after {
-            content: "開發歷程紀錄";
+            content: "開發歷程";
             position: absolute;
-            right: 55px;
+            right: 50px;
             background: rgba(0,0,0,0.8);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
@@ -487,7 +486,7 @@
         }
         .fab-btn:hover::after {
             opacity: 1;
-            right: 60px;
+            right: 55px;
         }
 
         @media (max-width: 768px) {
@@ -504,8 +503,10 @@
             .dot { width: 6px; height: 6px; }
             .dot.active { width: 16px; }
             .fab-btn {
-                top: 20px;
-                right: 20px;
+                top: 15px;
+                right: 15px;
+                width: 36px;
+                height: 36px;
             }
             .fab-btn::after { display: none; }
         }
@@ -515,6 +516,10 @@
 
     <div class="main-container">
         <div class="glass-card">
+            <!-- Development History Button -->
+            <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
+                <i class="fa-solid fa-scroll"></i>
+            </a>
             <h1>Nutrition Tracker Pro</h1>
             <h2 style="font-size: 32px; font-weight: 600; margin-top: -5px; margin-bottom: 20px; background: linear-gradient(to right, #e2e8f0, #94a3b8); -webkit-background-clip: text; color: transparent; letter-spacing: 2px;">營養大師：專業熱量追蹤平台</h2>
             
@@ -545,11 +550,6 @@
             <p class="copyright">© 2026 Benson Hong. All Rights Reserved.</p>
         </div>
     </div>
-
-    <!-- Floating Action Button -->
-    <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
-        <i class="fa-solid fa-scroll"></i>
-    </a>
 
     <!-- Universal Modal -->
     <div id="assetModal" class="modal" onclick="closeModal()">
