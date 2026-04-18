@@ -244,10 +244,23 @@
 
     <script>
         function openModal(type) {
-            const body = document.getElementById('modalBody');
-            let content = '';
-            
-            if (type === 'qr') {
+        const isMobile = window.innerWidth <= 768;
+        
+        // On mobile, open PDFs and presentation in a new tab for better UX
+        if (isMobile && (type === 'motivation' || type === 'technical' || type === 'detail')) {
+            const urls = {
+                'motivation': '行動平台動機與理念簡報.pdf',
+                'technical': '行動平台技術概念簡報.pdf',
+                'detail': 'https://github.com/benson927/nutrition-tracker-pro'
+            };
+            window.open(urls[type], '_blank');
+            return;
+        }
+
+        const body = document.getElementById('modalBody');
+        let content = '';
+        
+        if (type === 'qr') {
                 content = `
                     <div style="text-align: center;">
                         <img src="qrcode.png" style="width: 280px; height: 280px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.1); margin-bottom: 25px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);">
