@@ -117,18 +117,29 @@
         .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; padding: 80px; max-width: 800px; }
         .qa-layout h2 { font-size: 80px; margin-bottom: 20px; }
 
-        /* QR Modal Styles */
+        /* Universal Asset Modal Styles */
         .qr-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-            display: none; justify-content: center; align-items: center; z-index: 1000;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
         }
         .qr-modal.active { display: flex; animation: fadeIn 0.3s ease; }
-        .qr-content {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px; border-radius: 24px; text-align: center; max-width: 400px;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
+        .modal-content-container {
+            background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 24px; text-align: center; 
+            width: 90%; max-width: 1000px; max-height: 90vh;
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.2);
+            position: relative; overflow-y: auto;
         }
+        .close-modal-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .close-modal-btn:hover { background: rgba(239, 68, 68, 0.4); border-color: #ef4444; }
+        
         .qr-trigger-btn {
             background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.4);
             color: #38bdf8; padding: 12px 25px; border-radius: 30px; cursor: pointer;
@@ -147,25 +158,56 @@
         <p class="subtitle" style="font-size: 32px; color: #fff;">開發歷程與系統功能實錄</p>
         <p style="font-size: 20px; color: var(--text-secondary); margin-top: 15px;">從 3D 視覺實驗到 Liquid Glass 風格的完整技術迭代</p>
         
-        <button class="qr-trigger-btn" onclick="toggleQR(true)">
+        <button class="qr-trigger-btn" onclick="openModal('qr')">
             <i class="fa-solid fa-qrcode"></i> 掃描互動體驗
         </button>
     </div>
 </div>
 
-<!-- QR Code Modal -->
-<div id="qrModal" class="qr-modal" onclick="toggleQR(false)">
-    <div class="qr-content glass-panel" onclick="event.stopPropagation()">
-        <img src="qrcode.png" alt="QR Code" style="width: 250px; height: 250px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); margin-bottom: 20px;">
-        <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">即刻體驗</h3>
-        <p style="color: var(--text-secondary);">請掃描 QR Code 隨時同步觀看內容</p>
-        <button onclick="toggleQR(false)" style="margin-top: 20px; background: none; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 20px; border-radius: 20px; cursor: pointer;">關閉</button>
+<!-- Dynamic Asset Modal -->
+<div id="assetModal" class="qr-modal" onclick="closeModal()">
+    <div class="modal-content-container glass-panel" onclick="event.stopPropagation()">
+        <button class="close-modal-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div id="modalBody">
+            <!-- Content injected via JS -->
+        </div>
     </div>
 </div>
 
 <script>
-    function toggleQR(show) {
-        document.getElementById('qrModal').classList.toggle('active', show);
+    function openModal(type) {
+        const body = document.getElementById('modalBody');
+        let content = '';
+        
+        if (type === 'qr') {
+            content = `
+                <img src="qrcode.png" alt="QR Code" style="width: 250px; height: 250px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); margin-bottom: 20px;">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">即刻體驗</h3>
+                <p style="color: var(--text-secondary);">請掃描 QR Code 隨時同步觀看內容</p>
+            `;
+        } else if (type === 'motivation') {
+            content = `<iframe src="行動平台動機與理念簡報.pdf" style="width:100%; height:75vh; border:none; border-radius:12px;"></iframe>`;
+        } else if (type === 'technical') {
+            content = `<iframe src="行動平台技術概念簡報.pdf" style="width:100%; height:75vh; border:none; border-radius:12px;"></iframe>`;
+        } else if (type === 'detail') {
+            content = `<iframe src="presentation.html" style="width:100%; height:75vh; border:none; border-radius:12px;"></iframe>`;
+        } else if (type === 'video') {
+            content = `
+                <video controls autoplay style="width:100%; border-radius:12px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+                    <source src="行動平台影片v2.mp4" type="video/mp4">
+                    您的瀏覽器不支援影片播放。
+                </video>
+                <h3 style="color: var(--neon-purple); margin-top: 20px;">操作演示影片</h3>
+            `;
+        }
+        
+        body.innerHTML = content;
+        document.getElementById('assetModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('assetModal').classList.remove('active');
+        document.getElementById('modalBody').innerHTML = ''; // Stop video/audio when closing
     }
 </script>
 
@@ -275,18 +317,18 @@
         <div class="contact-info" style="font-size: 20px; margin-top: 40px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
             核心技術棧：React / Tailwind CSS / SweetAlert2 / CSS Animations
             <div style="margin-top: 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; justify-content: center;">
-                <a href="行動平台動機與理念簡報.pdf" target="_blank" class="btn" style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); color: #7dd3fc; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); text-decoration: none; border-radius: 8px;">
+                <button onclick="openModal('motivation')" class="btn" style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); color: #7dd3fc; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); cursor: pointer; border-radius: 8px; width: 100%;">
                     <i class="fa-solid fa-lightbulb" style="margin-right: 8px;"></i> 動機與理念簡報
-                </a>
-                <a href="行動平台技術概念簡報.pdf" target="_blank" class="btn" style="background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); color: #c084fc; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); text-decoration: none; border-radius: 8px;">
+                </button>
+                <button onclick="openModal('technical')" class="btn" style="background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); color: #c084fc; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); cursor: pointer; border-radius: 8px; width: 100%;">
                     <i class="fa-solid fa-gears" style="margin-right: 8px;"></i> 技術概念簡報
-                </a>
-                <a href="presentation.html" class="btn" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.5); color: #818cf8; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); text-decoration: none; border-radius: 8px;">
+                </button>
+                <button onclick="openModal('detail')" class="btn" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.5); color: #818cf8; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); cursor: pointer; border-radius: 8px; width: 100%;">
                     <i class="fa-solid fa-file-lines" style="margin-right: 8px;"></i> 詳細開發簡報
-                </a>
-                <a href="行動平台影片v2.mp4" target="_blank" class="btn" style="background: rgba(236, 72, 153, 0.2); border: 1px solid rgba(236, 72, 153, 0.5); color: #f472b6; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(236, 72, 153, 0.2); text-decoration: none; border-radius: 8px;">
+                </button>
+                <button onclick="openModal('video')" class="btn" style="background: rgba(236, 72, 153, 0.2); border: 1px solid rgba(236, 72, 153, 0.5); color: #f472b6; font-size: 16px; padding: 12px 20px; box-shadow: 0 0 15px rgba(236, 72, 153, 0.2); cursor: pointer; border-radius: 8px; width: 100%;">
                     <i class="fa-solid fa-play" style="margin-right: 8px;"></i> 操作演示影片
-                </a>
+                </button>
             </div>
         </div>
     </div>
