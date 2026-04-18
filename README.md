@@ -1,6 +1,11 @@
 # 🚀 Nutrition Tracker Pro
 
-一款基於 React 打造的極致美學健康追蹤應用。採用前衛的 **Liquid Glass (液態玻璃)** 視覺風格，提供直觀的 BMR 計算、飲食追蹤與社群互動功能。
+一款基於 React 打造的健康追蹤應用，採用前衛的 Liquid Glass (液態玻璃) 視覺風格。
+
+### 📱 掃描開啟線上簡報 (Scan for Demo)
+<img src="qrcode.png" width="180" alt="QR Code" />
+
+**[🚀 點此開啟線上展示入口 (Live Demo)](https://benson927.github.io/nutrition-tracker-pro/)**
 
 ---
 
