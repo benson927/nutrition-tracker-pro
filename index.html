@@ -485,8 +485,10 @@
 
             const body = document.getElementById('modalBody');
             const controls = document.getElementById('pdfControls');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn');
             body.innerHTML = '';
             controls.style.display = 'none';
+            fullscreenBtn.style.display = (type === 'qr') ? 'none' : 'flex';
             currentType = type;
             
             if (type === 'qr') {
