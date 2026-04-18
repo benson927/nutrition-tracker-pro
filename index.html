@@ -3,28 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Tracker Pro - 成果展示入口</title>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Nutrition Tracker Pro - 成果展示入    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gaegu:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
-            --bg-color: #000000;
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-secondary: #cbd5e1;
-            --neon-blue: #6366f1;
-            --neon-purple: #a855f7;
-            --neon-cyan: #38bdf8;
+            --bg-color: #fdfbf7;
+            --paper-grid: rgba(220, 215, 200, 0.4);
+            --text-main: #2d3436;
+            --text-secondary: #636e72;
+            --glass-bg: rgba(255, 255, 245, 0.9);
+            --glass-border: #333333;
+            --neon-blue: #74b9ff;
+            --neon-purple: #a29bfe;
+            --neon-cyan: #55efc4;
+            --neon-pink: #fab1a0;
+            --neon-indigo: #81ecec;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #050505;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(var(--paper-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: var(--text-main);
-            font-family: 'Urbanist', 'Noto Sans TC', sans-serif;
+            font-family: 'Gaegu', 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -32,18 +38,12 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
-            overflow-y: auto; /* Allow scrolling on small screens */
+            overflow-y: auto;
+        }*/
         }
 
-        /* Ambient Background Shadows */
-        body::before {
-            content: ''; position: absolute; top: -10%; right: -10%; width: 60%; height: 60%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%); z-index: 0;
-        }
-        body::after {
-            content: ''; position: absolute; bottom: -10%; left: -10%; width: 70%; height: 70%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 70%); z-index: 0;
-        }
+        /* Clean up ambient background shadows for sketch feel */
+        body::before, body::after { display: none; }
 
         .main-container {
             width: 100%;
@@ -53,23 +53,29 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 40px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            /* Hand-drawn irregular border */
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
             padding: 80px 60px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.05); /* Sketchy flat shadow */
             width: 100%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-0.2deg); }
+            50% { transform: translateY(-5px) rotate(0.2deg); }
         }
 
         h1 {
+            font-family: 'Architects Daughter', cursive;
             font-size: 64px;
             font-weight: 700;
             margin-bottom: 15px;
-            background: linear-gradient(to right, #ffffff, #a5b4fc);
-            -webkit-background-clip: text;
-            color: transparent;
+            color: var(--text-main);
             letter-spacing: -1px;
             line-height: 1.1;
         }
@@ -90,64 +96,64 @@
 
         .btn {
             padding: 22px 30px;
-            border-radius: 18px;
-            font-size: 18px;
-            font-weight: 600;
+            border-radius: 125px 15px 105px 15px/15px 105px 15px 125px; /* Sketchy button shape */
+            font-size: 19px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             text-decoration: none;
-            border: 1px solid transparent;
+            border: 2px solid var(--glass-border);
+            box-shadow: 4px 4px 0px var(--glass-border); /* Hand-inked solid shadow */
+            position: relative;
+            background: #fff;
+            color: var(--text-main);
         }
 
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .glass-card {
-                padding: 40px 25px;
-                border-radius: 30px;
-            }
-            h1 {
-                font-size: 38px;
-            }
-            .subtitle {
-                font-size: 18px;
-                margin-bottom: 30px;
-            }
-            .button-grid {
-                grid-template-columns: 1fr; /* Stack buttons vertically */
-                gap: 15px;
-                margin-bottom: 30px;
-            }
-            .btn {
-                padding: 18px 20px;
-                font-size: 16px;
-            }
-            .modal-container {
-                padding: 15px;
-                width: 95%;
-                height: 80vh;
-            }
-            .close-btn {
-                top: 15px;
-                right: 15px;
-                width: 36px;
-                height: 36px;
-            }
+        .btn:hover {
+            transform: scale(1.03) translate(-2px, -2px);
+            box-shadow: 8px 8px 0px var(--glass-border);
         }
 
-        .btn-blue {
-            background: rgba(56, 189, 248, 0.08);
-            border-color: rgba(56, 189, 248, 0.3);
-            color: #7dd3fc;
-        }
-        .btn-blue:hover { background: rgba(56, 189, 248, 0.15); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2); }
+        .btn-blue { background-color: #d1f3ff; }
+        .btn-purple { background-color: #e3d9ff; }
+        .btn-indigo { background: #d7e4ff; }
+        .btn-pink { background-color: #ffdce5; }
+        .btn-gallery { background-color: #c8ffe5; }
 
-        .btn-purple {
-            background: rgba(168, 85, 247, 0.08);
-            border-color: rgba(168, 85, 247, 0.3);
+        .btn i {
+            font-size: 22px;
+            color: var(--glass-border);
+        }
+
+        .qr-trigger {
+            background: transparent;
+            border: 2px dashed var(--glass-border);
+            color: var(--text-secondary);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            font-family: 'Gaegu', cursive;
+        }
+
+        .qr-trigger:hover {
+            background: var(--glass-border);
+            color: var(--bg-color);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-family: 'Gaegu', cursive;
+        }
             color: #c084fc;
         }
         .btn-purple:hover { background: rgba(168, 85, 247, 0.15); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2); }
@@ -439,34 +445,33 @@
         /* Developmental History Button - Inside Glass Card */
         .fab-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 46px;
-            height: 46px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
+            top: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            background: #fff;
+            border: 2px solid var(--glass-border);
+            border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%; /* Wobbly circle */
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: var(--glass-border);
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             z-index: 10;
             cursor: pointer;
+            box-shadow: 3px 3px 0px var(--glass-border);
         }
 
         .fab-btn:hover {
-            transform: scale(1.1) rotate(10deg);
-            border-color: var(--neon-cyan);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            transform: scale(1.1) rotate(15deg);
+            background: #fff;
+            box-shadow: 5px 5px 0px var(--glass-border);
         }
 
         .fab-btn i {
             font-size: 18px;
-            color: var(--neon-cyan);
+            color: var(--glass-border);
         }
 
         /* Tooltip style */
@@ -474,32 +479,30 @@
             content: "開發歷程";
             position: absolute;
             right: 55px;
-            background: rgba(0,0,0,0.8);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
+            background: var(--glass-border);
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 13px;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s ease;
             color: #fff;
+            font-family: 'Gaegu', cursive;
         }
         .fab-btn:hover::after {
             opacity: 1;
-            right: 60px;
+            right: 65px;
         }
 
         @media (max-width: 768px) {
-            .gallery-image {
-                max-width: 95%;
-                max-height: 60vh;
-                border-radius: 15px;
+            .glass-card {
+                padding: 40px 20px;
+                border-radius: 120px 15px 100px 15px/15px 100px 15px 120px;
             }
-            .gallery-nav {
-                bottom: 10px;
-                padding: 8px 15px;
-                gap: 12px;
-            }
+            h1 { font-size: 42px; }
+            .subtitle { font-size: 20px; }
+            .button-grid { grid-template-columns: 1fr; }
             .dot { width: 6px; height: 6px; }
             .dot.active { width: 16px; }
             .fab-btn {
