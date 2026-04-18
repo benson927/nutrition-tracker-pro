@@ -579,9 +579,9 @@
         /* Moomin Mascot - Enlarged & Animated */
         .moomin-container {
             position: absolute;
-            bottom: -30px;
-            left: -40px;
-            width: 220px;
+            bottom: -50px;
+            left: -60px;
+            width: 320px; /* MEGA SIZE */
             z-index: 5;
             pointer-events: none;
             animation: breathe 5s ease-in-out infinite;
@@ -597,17 +597,17 @@
 
         .moomin-eyelid {
             position: absolute;
-            top: 29.5%; /* Fine-tuned for better coverage */
+            top: 29.5%; /* Consistent percentage */
             left: 57.5%;
-            width: 15px; /* Slightly wider for better visibility */
-            height: 9px;
+            width: 22px; /* Scaled width for 320px img */
+            height: 12px;
             background: #fdfbf7; 
             border-radius: 50%;
             transform-origin: center;
             animation: blink 3.5s ease-in-out infinite;
             z-index: 6;
             transform: scaleY(0);
-            border: 1px solid rgba(0,0,0,0.2); /* Sharper border for clearer blink */
+            border: 1px solid rgba(0,0,0,0.2);
         }
 
         @media (max-width: 768px) {
