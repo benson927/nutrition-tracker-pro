@@ -210,21 +210,21 @@
             <p class="subtitle">行動平台開發與成果展示入口</p>
             
             <div class="button-grid">
-                <button onclick="openModal('motivation')" class="btn btn-blue">
+                <a href="行動平台動機與理念簡報.pdf" target="_blank" onclick="openModal(event, 'motivation')" class="btn btn-blue">
                     <i class="fa-solid fa-lightbulb"></i> 動機與理念簡報
-                </button>
-                <button onclick="openModal('technical')" class="btn btn-purple">
+                </a>
+                <a href="行動平台技術概念簡報.pdf" target="_blank" onclick="openModal(event, 'technical')" class="btn btn-purple">
                     <i class="fa-solid fa-gears"></i> 技術概念簡報
-                </button>
-                <button onclick="window.open('https://github.com/benson927/nutrition-tracker-pro', '_blank')" class="btn btn-indigo">
+                </a>
+                <a href="https://github.com/benson927/nutrition-tracker-pro" target="_blank" onclick="openModal(event, 'github')" class="btn btn-indigo">
                     <i class="fa-brands fa-github"></i> GitHub 專案原始碼
-                </button>
-                <button onclick="openModal('video')" class="btn btn-pink">
+                </a>
+                <a href="行動平台影片v2.mp4" target="_blank" onclick="openModal(event, 'video')" class="btn btn-pink">
                     <i class="fa-solid fa-play"></i> 操作演示影片
-                </button>
+                </a>
             </div>
 
-            <button class="qr-trigger" onclick="openModal('qr')">
+            <button class="qr-trigger" onclick="openModal(event, 'qr')">
                 <i class="fa-solid fa-qrcode" style="margin-right: 8px;"></i> 掃描 QR Code 開啟體驗
             </button>
 
@@ -243,20 +243,28 @@
     </div>
 
     <script>
-        function openModal(type) {
+        function openModal(event, type) {
         const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-        const isSmallScreen = window.innerWidth <= 1024; // Cover tablets & phones
+        const isSmallScreen = window.innerWidth <= 1180; // Expanded to cover more iPad models
         
-        // On mobile/tablets, open PDFs and external links in a new tab for native viewer support
-        if ((isTouchDevice || isSmallScreen) && (type === 'motivation' || type === 'technical' || type === 'detail')) {
-            const urls = {
-                'motivation': '行動平台動機與理念簡報.pdf',
-                'technical': '行動平台技術概念簡報.pdf',
-                'detail': 'https://github.com/benson927/nutrition-tracker-pro'
-            };
-            window.open(urls[type], '_blank');
-            return;
+        // On touch devices or smaller screens, let the default <a> link behavior take over (open in new tab)
+        if (isTouchDevice || isSmallScreen) {
+            if (type === 'qr') {
+                event.preventDefault();
+                // QR still shows in modal as it's an image
+            } else if (type === 'video') {
+                event.preventDefault();
+                // Video still shows in modal
+            } else {
+                // For PDFs & GitHub, do NOT prevent default, let it open in new tab
+                return;
+            }
+        } else {
+            // Deskstop UX: Prevent default link behavior and show modal
+            if (type !== 'github') event.preventDefault();
         }
+
+        if (type === 'github') return; // GitHub always opens in new tab
 
         const body = document.getElementById('modalBody');
         let content = '';
