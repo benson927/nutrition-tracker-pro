@@ -419,6 +419,23 @@
             box-shadow: 0 0 10px var(--neon-cyan);
         }
 
+        /* Gallery Scrolling Style */
+        .gallery-scroll-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 40px 20px;
+            align-items: center;
+        }
+        .gallery-scroll-item {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
         @media (max-width: 768px) {
             .gallery-image {
                 max-width: 95%;
@@ -573,31 +590,42 @@
 
         // Mode Switching Logic
         document.addEventListener('fullscreenchange', () => {
-            if (!pdfDoc) return;
             const controls = document.getElementById('pdfControls');
             const body = document.getElementById('modalBody');
 
-            if (document.fullscreenElement) {
-                // Fullscreen: Slide Mode
-                body.innerHTML = '<canvas id="pdf-canvas"></canvas>';
-                canvas = document.getElementById('pdf-canvas');
-                ctx = canvas.getContext('2d');
-                controls.style.display = 'flex';
-                renderSinglePage(pageNum);
-            } else {
-                // Return to Normal: Scroll Mode
-                controls.style.display = 'none';
-                renderAllPages();
+            if (currentType === 'motivation' || currentType === 'technical') {
+                if (document.fullscreenElement) {
+                    body.innerHTML = '<canvas id="pdf-canvas"></canvas>';
+                    canvas = document.getElementById('pdf-canvas');
+                    ctx = canvas.getContext('2d');
+                    controls.style.display = 'flex';
+                    renderSinglePage(pageNum);
+                } else {
+                    controls.style.display = 'none';
+                    renderAllPages();
+                }
+            } else if (currentType === 'gallery') {
+                if (document.fullscreenElement) {
+                    renderGallerySlide();
+                } else {
+                    renderGalleryScroll();
+                }
             }
         });
 
         // Keyboard support
         document.addEventListener('keydown', (e) => {
             if (!document.getElementById('assetModal').classList.contains('active') || !document.fullscreenElement) return;
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; queueRenderPage(pageNum); }
-            } else if (e.key === 'ArrowLeft') {
-                if (pdfDoc && pageNum > 1) { pageNum--; queueRenderPage(pageNum); }
+            
+            if (currentType === 'motivation' || currentType === 'technical') {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    if (pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; queueRenderPage(pageNum); }
+                } else if (e.key === 'ArrowLeft') {
+                    if (pdfDoc && pageNum > 1) { pageNum--; queueRenderPage(pageNum); }
+                }
+            } else if (currentType === 'gallery') {
+                if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+                else if (e.key === 'ArrowLeft') prevSlide();
             }
         });
 
@@ -606,11 +634,9 @@
             const isSmallScreen = window.innerWidth <= 1180;
             
             if (isTouchDevice || isSmallScreen) {
-                // For gallery on mobile, let the <a> tag handle navigation to gallery.html
-                if (type === 'gallery') return; 
-                
+                // Mobile behavior: Open PDFs and Gallery in new tab
+                if (type === 'motivation' || type === 'technical' || type === 'gallery') return; 
                 if (type === 'qr' || type === 'video') event.preventDefault();
-                else return;
             } else {
                 if (type !== 'github') event.preventDefault();
             }
@@ -652,36 +678,42 @@
                     </div>
                 `;
             } else if (type === 'gallery') {
-                body.innerHTML = `
-                    <div class="gallery-container">
-                        <img src="img4.jpg" class="gallery-image active" onclick="nextSlide()">
-                        <img src="img5.jpg" class="gallery-image" onclick="nextSlide()">
-                        <img src="img1.jpg" class="gallery-image" onclick="nextSlide()">
-                        <img src="img2.png" class="gallery-image" onclick="nextSlide()">
-                        <img src="img7.jpg" class="gallery-image" onclick="nextSlide()">
-                        <img src="img6.jpg" class="gallery-image" onclick="nextSlide()">
-                        <div class="gallery-nav">
-                            <button onclick="prevSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                            <div id="dot-container" style="display: flex; gap: 8px;">
-                                <div class="dot active"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                            <button onclick="nextSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                        <div style="position: absolute; bottom: 85px; width: 100%; text-align: center;">
-                            <p style="color: var(--text-secondary); font-size: 14px; margin: 0; background: rgba(0,0,0,0.3); display: inline-block; padding: 5px 15px; border-radius: 15px; backdrop-filter: blur(5px);">
-                                點擊圖片或使用箭頭切換亮點 (精選 6 張)
-                            </p>
-                        </div>
-                    </div>
-                `;
+                currentSlide = 0;
+                renderGalleryScroll();
             }
             
             document.getElementById('assetModal').classList.add('active');
+        }
+
+        const galleryImgs = ['img4.jpg', 'img5.jpg', 'img1.jpg', 'img2.png', 'img7.jpg', 'img6.jpg'];
+
+        function renderGalleryScroll() {
+            const body = document.getElementById('modalBody');
+            body.innerHTML = `<div class="gallery-scroll-container">
+                ${galleryImgs.map(src => `<img src="${src}" class="gallery-scroll-item">`).join('')}
+                <p style="color: var(--text-secondary); margin: 40px 0;">已捲動至底部</p>
+            </div>`;
+        }
+
+        function renderGallerySlide() {
+            const body = document.getElementById('modalBody');
+            body.innerHTML = `
+                <div class="gallery-container">
+                    ${galleryImgs.map((src, i) => `<img src="${src}" class="gallery-image ${i === currentSlide ? 'active' : ''}" onclick="nextSlide()">`).join('')}
+                    <div class="gallery-nav">
+                        <button onclick="prevSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                        <div id="dot-container" style="display: flex; gap: 8px;">
+                            ${galleryImgs.map((_, i) => `<div class="dot ${i === currentSlide ? 'active' : ''}"></div>`).join('')}
+                        </div>
+                        <button onclick="nextSlide()" class="pdf-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div style="position: absolute; bottom: 85px; width: 100%; text-align: center;">
+                        <p style="color: var(--text-secondary); font-size: 14px; margin: 0; background: rgba(0,0,0,0.3); display: inline-block; padding: 5px 15px; border-radius: 15px; backdrop-filter: blur(5px);">
+                            全螢幕模式：點擊圖片或箭頭切換亮點 (精選 6 張)
+                        </p>
+                    </div>
+                </div>
+            `;
         }
 
         let currentSlide = 0;
