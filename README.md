@@ -37,11 +37,18 @@
 
 ---
 
-## 📽 開發實錄與展示 (Demo & Presentation)
+## 🚀 專案展示 (Demo & Presentation)
 
 目前專案已透過 GitHub Pages 進行線上展示，您可以直接點擊下方連結觀看：
 
-- **🚀 [線上展示入口 (Live Demo)](https://benson927.github.io/nutrition-tracker-pro/)**
+- **✨ [線上互動簡報 (Live Demo)](https://benson927.github.io/nutrition-tracker-pro/)**
+
+### 🎬 功能演示影片 (Feature Demo)
+如果您想快速了解系統的操作流程，請觀看下方的實機錄影：
+
+https://github.com/benson927/nutrition-tracker-pro/assets/demo_video.mov
+
+> (註：若 GitHub 預覽未正常顯示，請直接查看 [demo_video.mov](./demo_video.mov) 檔案)
 
 ### 簡報內容說明：
 1. **投影片展示版 (index.html)**：適合快速了解開發階段與視覺成果。
