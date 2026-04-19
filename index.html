@@ -1148,8 +1148,12 @@
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 傳送中...';
 
             try {
-                // 修改為您的後端 API 地址
-                const response = await fetch('http://localhost:8000/api/feedback', {
+                // 自動切換正式與本地 API 地址
+                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? 'http://127.0.0.1:8000/api'
+                    : 'https://nutrition-tracker-pro-api.onrender.com/api';
+                
+                const response = await fetch(`${API_BASE}/feedback`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 

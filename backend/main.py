@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 from typing import List, Optional
 
-from database import get_db, init_db
+from database import get_db, init_db, WrappedConnection
 from models import (
     FoodCreate, FoodResponse,
     RecommendationResponse,
@@ -18,8 +18,12 @@ app = FastAPI(title="Nutrition Tracker Pro API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:8080",
+        "https://benson927.github.io" # 新增您的 GitHub Pages 網域
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -43,7 +47,7 @@ def calculate_tdee(weight_kg: float, height_cm: float, age: int,
 def get_safe_remaining_calories(tdee: float, consumed: float) -> float:
     return max(0.0, tdee - consumed)
 
-def get_user_or_404(user_id: int, db: sqlite3.Connection) -> dict:
+def get_user_or_404(user_id: int, db: WrappedConnection) -> dict:
     row = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
     if not row:
         raise HTTPException(status_code=404, detail=f"User {user_id} not found")
@@ -52,11 +56,11 @@ def get_user_or_404(user_id: int, db: sqlite3.Connection) -> dict:
 # ── 使用者端點 ────────────────────────────────────────
 
 @app.get("/api/users/{user_id}", response_model=UserResponse)
-def get_user_profile(user_id: int, db: sqlite3.Connection = Depends(get_db)):
+def get_user_profile(user_id: int, db: WrappedConnection = Depends(get_db)):
     return get_user_or_404(user_id, db)
 
 @app.put("/api/users/{user_id}")
-def update_user_profile(user_id: int, profile: UserUpdate, db: sqlite3.Connection = Depends(get_db)):
+def update_user_profile(user_id: int, profile: UserUpdate, db: WrappedConnection = Depends(get_db)):
     # 確保使用者存在
     get_user_or_404(user_id, db)
 
@@ -80,7 +84,7 @@ def update_user_profile(user_id: int, profile: UserUpdate, db: sqlite3.Connectio
     return {"message": "Profile updated", "new_tdee": new_tdee}
 
 @app.post("/api/users")
-def create_quick_user(profile: QuickUserCreate, db: sqlite3.Connection = Depends(get_db)):
+def create_quick_user(profile: QuickUserCreate, db: WrappedConnection = Depends(get_db)):
     import uuid
     # 直接建立新使用者並計算 TDEE
     tdee = calculate_tdee(
@@ -107,11 +111,11 @@ def create_quick_user(profile: QuickUserCreate, db: sqlite3.Connection = Depends
 # ── 食物端點 ──────────────────────────────────────────
 
 @app.get("/api/foods", response_model=List[FoodResponse])
-def get_foods(db: sqlite3.Connection = Depends(get_db)):
+def get_foods(db: WrappedConnection = Depends(get_db)):
     return [dict(r) for r in db.execute("SELECT * FROM food_items").fetchall()]
 
 @app.post("/api/foods")
-def create_food(food: FoodCreate, db: sqlite3.Connection = Depends(get_db)):
+def create_food(food: FoodCreate, db: WrappedConnection = Depends(get_db)):
     # 檢查是否已存在同名且同熱量的食物
     existing = db.execute(
         "SELECT id FROM food_items WHERE name = ? AND calories = ?", 
@@ -143,7 +147,7 @@ class DietLogRequest(BaseModel):
     meal_type: str = "早餐"
 
 @app.post("/api/records")
-def add_record(record: DietLogRequest, db: sqlite3.Connection = Depends(get_db)):
+def add_record(record: DietLogRequest, db: WrappedConnection = Depends(get_db)):
     food_row = db.execute("SELECT * FROM food_items WHERE id = ?", (record.food_item_id,)).fetchone()
     if not food_row:
         raise HTTPException(status_code=404, detail="Food not found")
@@ -161,7 +165,7 @@ def add_record(record: DietLogRequest, db: sqlite3.Connection = Depends(get_db))
     return {"message": "Record added"}
 
 @app.get("/api/records")
-def get_records(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def get_records(user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     rows = db.execute('''
         SELECT d.id, d.amount_g, d.total_calories, d.total_protein, f.name
         FROM diet_logs d
@@ -172,13 +176,13 @@ def get_records(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
     return [dict(r) for r in rows]
 
 @app.delete("/api/records/{record_id}")
-def delete_record(record_id: int, db: sqlite3.Connection = Depends(get_db)):
+def delete_record(record_id: int, db: WrappedConnection = Depends(get_db)):
     db.execute("DELETE FROM diet_logs WHERE id = ?", (record_id,))
     db.commit()
     return {"message": "Record deleted"}
 
 @app.delete("/api/records")
-def clear_records(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def clear_records(user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     db.execute("DELETE FROM diet_logs WHERE user_id = ? AND record_date = DATE('now', 'localtime')", (user_id,))
     db.commit()
     return {"message": "Today's records cleared"}
@@ -187,7 +191,7 @@ def clear_records(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
 
 @app.get("/api/chart_data")
 @app.get("/api/chart-data")
-def get_chart_data(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def get_chart_data(user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     meal_order = ["早餐", "午餐", "下午茶", "晚餐", "宵夜"]
     
     # 撈取今日所有的紀錄，並按餐別分組
@@ -223,7 +227,7 @@ def get_chart_data(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
 # ── 推薦端點 ──────────────────────────────────────────
 
 @app.get("/api/recommendations", response_model=RecommendationResponse)
-def get_recommendations(user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def get_recommendations(user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     user = get_user_or_404(user_id, db)
     tdee_budget = float(user["tdee"])
     weight_kg = float(user["weight_kg"])
@@ -255,7 +259,7 @@ def get_recommendations(user_id: int = 1, db: sqlite3.Connection = Depends(get_d
 # ── 論壇端點 ──────────────────────────────────────────
 
 @app.get("/api/posts", response_model=List[PostResponse])
-def get_posts(db: sqlite3.Connection = Depends(get_db)):
+def get_posts(db: WrappedConnection = Depends(get_db)):
     # 讀取發文時凍結的 author_name 並別名為 username 以供前端使用
     # 使用 COALESCE 確保即便資料缺失也能回傳預設名稱，避免 Pydantic 驗證失敗
     posts = db.execute('''
@@ -274,7 +278,7 @@ def get_posts(db: sqlite3.Connection = Depends(get_db)):
     return result
 
 @app.post("/api/posts")
-def create_post(post: PostCreate, user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def create_post(post: PostCreate, user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     # 抓取當前的使用者名稱以進行凍結
     user = db.execute("SELECT username FROM users WHERE id = ?", (user_id,)).fetchone()
     current_username = user["username"] if user else "Unknown"
@@ -285,7 +289,7 @@ def create_post(post: PostCreate, user_id: int = 1, db: sqlite3.Connection = Dep
     return {"message": "Post created"}
 
 @app.post("/api/posts/{post_id}/comments")
-def add_comment(post_id: int, comment: CommentCreate, user_id: int = 1, db: sqlite3.Connection = Depends(get_db)):
+def add_comment(post_id: int, comment: CommentCreate, user_id: int = 1, db: WrappedConnection = Depends(get_db)):
     # 抓取當前的使用者名稱以進行凍結
     user = db.execute("SELECT username FROM users WHERE id = ?", (user_id,)).fetchone()
     current_username = user["username"] if user else "Unknown"
