@@ -8,12 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gaegu:wght@400;700&family=Inter:wght@400;600;700&family=Klee+One:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0c0c0c;
-            --text-primary: #f8fafc;
-            --text-secondary: rgba(255, 255, 255, 0.6);
+            --bg-color: #fdfbf7; /* Aged Paper Light Mode */
+            --text-primary: #2d3436; /* Dark Ink */
+            --text-secondary: rgba(45, 52, 54, 0.7);
             --neon-cyan: #38bdf8;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --sketch-shadow: rgba(0, 0, 0, 0.08);
         }
 
         body {
@@ -30,75 +31,89 @@
             position: relative;
         }
 
-        /* Ambient Blobs - Match Presentation Style */
+        /* Subtle Ambient Blobs - Light Mode Optimization */
         .background {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+            background-color: var(--bg-color);
         }
         .blob {
             position: absolute;
-            width: 500px; height: 500px;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
-            filter: blur(80px);
+            width: 600px; height: 600px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+            filter: blur(100px);
             border-radius: 50%;
             animation: move 20s infinite alternate;
         }
         .blob-2 {
             top: 40%; left: 60%;
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.06) 0%, rgba(236, 72, 153, 0.06) 100%);
             animation-duration: 25s;
         }
         @keyframes move {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(100px, 50px) scale(1.1); }
+            100% { transform: translate(120px, 60px) scale(1.1); }
         }
 
         header {
             width: 100%;
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
             z-index: 10;
         }
 
         h1 {
             font-family: 'Klee One', cursive;
-            font-size: 36px;
+            font-size: 38px;
             margin: 0;
-            color: #fff;
+            color: var(--text-primary);
             letter-spacing: 2px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: var(--text-primary);
+            opacity: 0.1;
+            border-radius: 2px;
         }
 
         .gallery-list {
             width: 100%;
-            max-width: 800px;
-            padding: 20px;
+            max-width: 850px;
+            padding: 30px 20px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 50px;
             z-index: 5;
         }
 
         .gallery-item {
             width: 100%;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
             border: 2px solid var(--glass-border);
-            /* Sketchy Uneven Border-Radius */
-            border-radius: 15px 185px 15px 225px/225px 15px 185px 15px;
+            /* Sketchy Uneven Border-Radius - Matching Index Style */
+            border-radius: 12px 165px 12px 205px/205px 12px 165px 12px;
             overflow: hidden;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+            box-shadow: 12px 12px 0px var(--sketch-shadow);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
         }
 
         .gallery-item:hover {
             transform: scale(1.02) rotate(1deg);
-            box-shadow: 25px 25px 0px rgba(0,0,0,0.4);
-            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 18px 18px 0px rgba(0,0,0,0.12);
+            border-color: rgba(0, 0, 0, 0.3);
         }
 
         .gallery-item img {
@@ -106,29 +121,32 @@
             height: auto;
             display: block;
             border-bottom: 2px solid var(--glass-border);
+            filter: contrast(1.02); /* Slight pop for photos on light paper */
         }
 
         .info {
-            padding: 25px;
-            font-size: 16px;
+            padding: 30px;
+            font-size: 17px;
             color: var(--text-secondary);
             text-align: center;
             font-family: 'Gaegu', cursive;
             letter-spacing: 1px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .back-btn {
-            margin: 50px 0;
-            padding: 18px 45px;
-            background: #fff; /* High contrast ink style */
-            border-radius: 95px 15px 105px 15px/15px 105px 15px 95px;
-            color: #000;
+            margin: 60px 0;
+            padding: 16px 45px;
+            background: var(--text-primary); /* Dark Ink for high contrast */
+            border-radius: 105px 15px 95px 15px/15px 105px 15px 95px;
+            color: #fff !important;
             text-decoration: none;
             font-size: 20px;
             font-weight: 700;
             font-family: 'Gaegu', cursive;
-            border: 2px solid #000;
-            box-shadow: 6px 6px 0px rgba(255,255,255,0.1);
+            border: 2px solid var(--text-primary);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -136,36 +154,39 @@
         }
 
         .back-btn:hover {
-            transform: scale(1.08) rotate(-2deg);
-            background: var(--neon-cyan);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+            transform: scale(1.08) rotate(-1deg);
+            background: #222;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.15);
         }
 
         footer {
             width: 100%;
             padding: 60px 20px;
             text-align: center;
-            color: rgba(255,255,255,0.4);
+            color: rgba(0, 0, 0, 0.4);
             font-size: 14px;
             font-family: 'Gaegu', cursive;
             letter-spacing: 1.5px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.02);
             margin-top: auto;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Loading Animation Support */
+        /* Content Snapping and Entrance */
         .fade-in {
-            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+            animation: fadeIn 1.2s ease forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 28px; }
-            .gallery-list { padding: 15px; }
-            .gallery-item { border-radius: 10px 80px 10px 80px/80px 10px 80px 10px; }
+            h1 { font-size: 30px; }
+            .gallery-list { padding: 20px; gap: 35px; }
+            .gallery-item { border-radius: 10px 100px 10px 100px/100px 10px 100px 10px; }
+            .back-btn { padding: 14px 35px; font-size: 18px; }
         }
     </style>
 </head>
@@ -180,25 +201,31 @@
     </header>
     
     <div class="gallery-list fade-in">
-        <div class="gallery-item"><img src="img4.jpg" alt="Profile Setting"></div>
-        <div class="gallery-item"><img src="img5.jpg" alt="Forum/Logout"></div>
-        <div class="gallery-item"><img src="img1.jpg" alt="Dashboard"></div>
-        <div class="gallery-item"><img src="img2.png" alt="Tracking"></div>
-        <div class="gallery-item"><img src="img7.jpg" alt="Feature highlight"></div>
-        <div class="gallery-item"><img src="img6.jpg" alt="Last preview"></div>
+        <div class="gallery-item" style="animation-delay: 0.1s;"><img src="img4.jpg" alt="Profile Setting"></div>
+        <div class="gallery-item" style="animation-delay: 0.2s;"><img src="img5.jpg" alt="Forum/Logout"></div>
+        <div class="gallery-item" style="animation-delay: 0.3s;"><img src="img1.jpg" alt="Dashboard"></div>
+        <div class="gallery-item" style="animation-delay: 0.4s;"><img src="img2.png" alt="Tracking"></div>
+        <div class="gallery-item" style="animation-delay: 0.5s;"><img src="img7.jpg" alt="Feature highlight"></div>
+        <div class="gallery-item" style="animation-delay: 0.6s;"><img src="img6.jpg" alt="Last preview"></div>
     </div>
 
-    <div class="info fade-in">💡 小技巧：請在圖片上雙指縮放查看細節</div>
+    <div class="info fade-in" style="animation-delay: 0.7s;">💡 手機閱讀提醒：您可以在圖片上直接進行雙指縮放，查看更高清的數據細節。</div>
     
-    <a href="index.html" class="back-btn fade-in"><i class="fa-solid fa-arrow-left"></i> 返回展示入口</a>
+    <a href="index.html" class="back-btn fade-in" style="animation-delay: 0.8s;"><i class="fa-solid fa-arrow-left"></i> 返回展示入口</a>
 
-    <footer class="fade-in">
+    <footer class="fade-in" style="animation-delay: 0.9s;">
         © 2026 Benson Hong. All Rights Reserved.
     </footer>
 
     <script>
-        document.querySelectorAll('.gallery-item').forEach((item, index) => {
-            item.style.animationDelay = (index * 0.15) + 's';
+        // Smooth entrance reveal
+        document.addEventListener('DOMContentLoaded', () => {
+             const items = document.querySelectorAll('.fade-in');
+             items.forEach((item, idx) => {
+                 setTimeout(() => {
+                     item.style.opacity = '1';
+                 }, idx * 100);
+             });
         });
     </script>
 </body>
