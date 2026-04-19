@@ -4,26 +4,16 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 
-# 加載環境變數
+# 優先載入環境變數
 load_dotenv()
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'nutrition.db')
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-def normalize_query(query: str, is_postgres: bool):
-    if is_postgres:
-        query = query.replace('?', '%s')
-        query = query.replace("DATE('now', 'localtime')", "CURRENT_DATE")
-        query = query.replace("DATE('now')", "CURRENT_DATE")
-        if 'GROUP_CONCAT' in query:
-             query = query.replace('GROUP_CONCAT', 'STRING_AGG').replace(' food_names', " food_names || ''")
-    return query
 
 def clean_db_url(url: str):
     if not url:
-        return url
+        return None
     url = url.strip()
-    # psycopg2 比較偏好 postgresql:// 而非 postgres://
+    # 修正常見的開頭問題
     if url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql://", 1)
     return url
@@ -34,6 +24,7 @@ class WrappedConnection:
         self.is_postgres = not isinstance(conn, sqlite3.Connection)
 
     def execute(self, query, params=None):
+        from database import normalize_query # 延遲導入避免循環
         sql = normalize_query(query, self.is_postgres)
         if self.is_postgres:
             cursor = self.conn.cursor(cursor_factory=RealDictCursor)
@@ -51,17 +42,30 @@ class WrappedConnection:
         except:
             pass
 
+def normalize_query(query: str, is_postgres: bool):
+    if is_postgres:
+        query = query.replace('?', '%s')
+        query = query.replace("DATE('now', 'localtime')", "CURRENT_DATE")
+        query = query.replace("DATE('now')", "CURRENT_DATE")
+        if 'GROUP_CONCAT' in query:
+             query = query.replace('GROUP_CONCAT', 'STRING_AGG').replace(' food_names', " food_names || ''")
+    return query
+
 def init_db():
-    url = clean_db_url(DATABASE_URL)
-    print(f"Initializing database... (Using Cloud DB: {url is not None})")
+    raw_url = os.getenv("DATABASE_URL")
+    url = clean_db_url(raw_url)
+    print(f"DEBUG: Initializing database. Cloud Mode: {url is not None}")
+    
     try:
         if url:
             conn_str = url
             if 'sslmode' not in conn_str and 'localhost' not in conn_str:
                 separator = '&' if '?' in conn_str else '?'
                 conn_str += f"{separator}sslmode=require"
+            print(f"DEBUG: Attempting connection to Postgres...")
             raw_conn = psycopg2.connect(conn_str)
         else:
+            print(f"DEBUG: Using local SQLite...")
             raw_conn = sqlite3.connect(DB_PATH)
             
         is_postgres = url is not None
@@ -85,13 +89,14 @@ def init_db():
         
         raw_conn.commit()
         raw_conn.close()
-        print("Database initialized successfully.")
+        print("DEBUG: Database initialization complete.")
     except Exception as e:
-        print(f"FAILED TO INITIALIZE DATABASE: {e}")
+        print(f"CRITICAL ERROR IN init_db: {str(e)}")
         raise e
 
 def get_db():
-    url = clean_db_url(DATABASE_URL)
+    raw_url = os.getenv("DATABASE_URL")
+    url = clean_db_url(raw_url)
     try:
         if url:
             conn_str = url
@@ -109,5 +114,5 @@ def get_db():
         finally:
             wrapped.close()
     except Exception as e:
-        print(f"Database connection error: {e}")
+        print(f"CRITICAL: Database get_db error: {str(e)}")
         raise e
