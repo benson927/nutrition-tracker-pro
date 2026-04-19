@@ -24,7 +24,6 @@ class WrappedConnection:
         self.is_postgres = not isinstance(conn, sqlite3.Connection)
 
     def execute(self, query, params=None):
-        from database import normalize_query # 延遲導入避免循環
         sql = normalize_query(query, self.is_postgres)
         if self.is_postgres:
             cursor = self.conn.cursor(cursor_factory=RealDictCursor)
