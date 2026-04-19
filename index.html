@@ -611,7 +611,7 @@
 
         @media (max-width: 768px) {
             .glass-card {
-                padding: 40px 20px;
+                padding: 40px 20px 100px 20px; /* Increased bottom padding to move button up */
                 border-radius: 120px 15px 100px 15px/15px 100px 15px 120px;
             }
             h1 { font-size: 42px; }
@@ -627,13 +627,13 @@
             }
             .fab-btn::after { display: none; }
 
-            /* Mobile-specific mascot adjustments */
+            /* Mobile-specific mascot adjustments - No overlap version */
             .moomin-container {
-                width: 120px;
-                bottom: -15px;
-                left: -15px;
-                z-index: 20; /* Above buttons */
-                mix-blend-mode: normal; /* Don't blend into dark buttons */
+                width: 110px;
+                bottom: -20px;
+                left: -30px;
+                z-index: 5;
+                mix-blend-mode: multiply; /* Better for sketch feel on paper */
             }
             
             .qr-trigger {
