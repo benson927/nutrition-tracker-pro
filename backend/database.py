@@ -61,10 +61,8 @@ def init_db():
             if 'sslmode' not in conn_str and 'localhost' not in conn_str:
                 separator = '&' if '?' in conn_str else '?'
                 conn_str += f"{separator}sslmode=require"
-            print(f"DEBUG: Attempting connection to Postgres...")
             raw_conn = psycopg2.connect(conn_str)
         else:
-            print(f"DEBUG: Using local SQLite...")
             raw_conn = sqlite3.connect(DB_PATH)
             
         is_postgres = url is not None
