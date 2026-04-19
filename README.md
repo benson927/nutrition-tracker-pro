@@ -90,5 +90,4 @@ https://github.com/benson927/nutrition-tracker-pro/assets/行動平台影片v2.m
 
 ## 📄 授權說明 (License)
 
-© 2026 Benson Hong. All Rights Reserved.  
-Crafted with ❤️ and Liquid Glass Aesthetics.
+© 2026 Benson Hong. All Rights Reserved.
