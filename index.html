@@ -654,6 +654,127 @@
                 z-index: 10;
             }
         }
+
+        /* ── Feedback System Styles ── */
+        .feedback-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-main);
+            box-shadow: 5px 8px 0px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: float 5s ease-in-out infinite;
+        }
+        .feedback-fab:hover {
+            transform: scale(1.1) rotate(15deg) translateY(-5px);
+            box-shadow: 8px 12px 0px rgba(0,0,0,0.15);
+            background: #fff;
+        }
+
+        .feedback-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 320px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px 50px 15px 45px / 45px 15px 50px 15px;
+            padding: 25px;
+            box-shadow: 15px 20px 40px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+            transform-origin: bottom right;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .feedback-modal.active { display: flex; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .feedback-title {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: left;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-input, .feedback-textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--glass-border);
+            border-radius: 5px 15px 5px 15px / 15px 5px 15px 5px;
+            font-family: 'Klee One', 'Gaegu', cursive;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .feedback-input:focus, .feedback-textarea:focus {
+            background: #fff;
+            border-color: var(--neon-blue);
+        }
+
+        .feedback-textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .feedback-submit {
+            background: var(--glass-border);
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Gaegu', cursive;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .feedback-submit:hover {
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .feedback-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -702,6 +823,24 @@
             </button>
 
         </div>
+        
+        <!-- Feedback System UI -->
+        <div class="feedback-fab" id="feedbackFab" onclick="toggleFeedback()">
+            <i class="fa-solid fa-pen-nib"></i>
+        </div>
+
+        <div class="feedback-modal" id="feedbackModal">
+            <div class="feedback-close" onclick="toggleFeedback()"><i class="fa-solid fa-xmark"></i></div>
+            <div class="feedback-title">
+                <i class="fa-solid fa-comment-dots" style="color: var(--neon-blue);"></i> 意見箱
+            </div>
+            <input type="text" id="feedbackName" class="feedback-input" placeholder="您的稱呼 (選填)">
+            <textarea id="feedbackContent" class="feedback-textarea" placeholder="請輸入您的建議或想說的話..."></textarea>
+            <button class="feedback-submit" id="feedbackSubmit" onclick="sendFeedback()">
+                <i class="fa-solid fa-paper-plane"></i> 傳送意見
+            </button>
+        </div>
+
         <p class="copyright">© 2026 Benson Hong. All Rights Reserved.</p>
     </div>
 
@@ -978,6 +1117,55 @@
                 container.requestFullscreen();
             } else {
                 document.exitFullscreen();
+            }
+        }
+
+        // ── Feedback System Logic ──
+        function toggleFeedback() {
+            const modal = document.getElementById('feedbackModal');
+            modal.classList.toggle('active');
+        }
+
+        async function sendFeedback() {
+            const nameInput = document.getElementById('feedbackName');
+            const contentInput = document.getElementById('feedbackContent');
+            const submitBtn = document.getElementById('feedbackSubmit');
+            
+            const name = nameInput.value.trim();
+            const content = contentInput.value.trim();
+
+            if (!content) {
+                alert("請輸入建議內容！");
+                return;
+            }
+
+            // UI Loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 傳送中...';
+
+            try {
+                // 修改為您的後端 API 地址
+                const response = await fetch('http://localhost:8000/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name || "Anonymous", content: content })
+                });
+
+                if (response.ok) {
+                    alert("意見已成功送出！感謝您的參與。");
+                    nameInput.value = '';
+                    contentInput.value = '';
+                    toggleFeedback();
+                } else {
+                    const err = await response.json();
+                    alert("傳送失敗：" + (err.detail || "未知錯誤"));
+                }
+            } catch (error) {
+                console.error("Feedback Error:", error);
+                alert("連線失敗，請檢查後端伺服器是否啟動。");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> 傳送意見';
             }
         }
     </script>

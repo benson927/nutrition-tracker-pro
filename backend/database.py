@@ -103,6 +103,16 @@ def init_db():
     except sqlite3.OperationalError:
         pass
 
+    # 6. 意見箱表 (Feedback)
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS feedback (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name VARCHAR(50),
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
     conn.commit()
     conn.close()
 

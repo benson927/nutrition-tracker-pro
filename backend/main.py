@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
+import httpx
 from typing import List, Optional
 
 from database import get_db, init_db
@@ -8,7 +9,7 @@ from models import (
     FoodCreate, FoodResponse,
     RecommendationResponse,
     PostResponse, PostCreate, CommentResponse, CommentCreate,
-    UserUpdate, UserResponse, QuickUserCreate
+    UserUpdate, UserResponse, QuickUserCreate, FeedbackCreate
 )
 
 app = FastAPI(title="Nutrition Tracker Pro API")
@@ -290,3 +291,37 @@ def add_comment(post_id: int, comment: CommentCreate, user_id: int = 1, db: sqli
                (post_id, user_id, current_username, comment.content))
     db.commit()
     return {"message": "Comment added"}
+
+# ── 意見箱端點 (Feedback) ────────────────────────────────
+
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1495426623829311508/4VbzbJAZFiWbpGe9ix-BHexdGNfKjrBt-11KO1Qt0lf09o57gBdzFaCkN3s53ULxzjjv"
+
+@app.post("/api/feedback")
+async def receive_feedback(feedback: FeedbackCreate, db: sqlite3.Connection = Depends(get_db)):
+    # 1. 存入資料庫備份
+    db.execute("INSERT INTO feedback (name, content) VALUES (?, ?)", 
+               (feedback.name or "Anonymous", feedback.content))
+    db.commit()
+
+    # 2. 發送到 Discord Webhook (非同步)
+    if DISCORD_WEBHOOK_URL and "YOUR_DISCORD" not in DISCORD_WEBHOOK_URL:
+        payload = {
+            "embeds": [
+                {
+                    "title": "🎉 收到新建議！",
+                    "description": feedback.content,
+                    "color": 0x74b9ff,
+                    "fields": [
+                        {"name": "來自", "value": feedback.name or "Anonymous", "inline": True}
+                    ],
+                    "footer": {"text": "Nutrition Tracker Pro - Feedback System"}
+                }
+            ]
+        }
+        try:
+            async with httpx.AsyncClient() as client:
+                await client.post(DISCORD_WEBHOOK_URL, json=payload)
+        except Exception as e:
+            print(f"Error sending to Discord: {e}")
+
+    return {"message": "Feedback received. Thank you!"}

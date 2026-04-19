@@ -113,3 +113,7 @@ class PostCreate(BaseModel):
 
 class CommentCreate(BaseModel):
     content: str
+
+class FeedbackCreate(BaseModel):
+    name: Optional[str] = "Anonymous"
+    content: str
