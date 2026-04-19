@@ -22,39 +22,6 @@
             --neon-indigo: #81ecec;
         }
 
-        /* 🛡️ Security & Watermark Styles */
-        .watermark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1005;
-            display: none;
-            overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            opacity: 0.15;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-            padding: 50px;
-        }
-
-        .watermark.active {
-            display: flex;
-        }
-
-        .watermark-text {
-            font-family: 'Architects Daughter', cursive;
-            font-size: 22px;
-            color: #fff;
-            transform: rotate(-30deg);
-            white-space: nowrap;
-            margin: 40px;
-        }
-
         .no-select {
             user-select: none !important;
             -webkit-user-select: none !important;
@@ -916,9 +883,6 @@
     <!-- Universal Modal -->
     <div id="assetModal" class="modal" onclick="closeModal()">
         <div id="modalContainer" class="modal-container no-select" onclick="event.stopPropagation()">
-            <!-- Watermark Overlay -->
-            <div id="watermark" class="watermark"></div>
-            
             <div class="modal-header-actions">
                 <button id="fullscreenBtn" class="action-btn btn-fullscreen" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
                 <button class="action-btn btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -953,15 +917,6 @@
             'history': '開發過程經歷簡報.pdf',
             'video': '行動平台影片v2.mp4'
         };
-
-        // Initialize Watermark
-        const watermarkContainer = document.getElementById('watermark');
-        for (let i = 0; i < 20; i++) {
-            const span = document.createElement('span');
-            span.className = 'watermark-text';
-            span.innerText = '© 2026 Benson Hong - Preview Only';
-            watermarkContainer.appendChild(span);
-        }
 
         // Disable interaction inside modal
         const modalContainer = document.getElementById('modalContainer');
@@ -1108,7 +1063,6 @@
                     <h2 class="qr-title" style="color: rgba(255,255,255,0.8); margin-bottom: 15px; font-size: 32px; font-family: 'Klee One', cursive; transition: all 0.4s ease; letter-spacing: 2px;">即刻體驗</h2>
                     <p class="qr-desc" style="color: rgba(255,255,255,0.5); font-size: 18px; font-family: 'Klee One', cursive; transition: all 0.4s ease; letter-spacing: 1.5px;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
             } else if (type === 'motivation' || type === 'technical' || type === 'history') {
-                watermarkContainer.classList.add('active'); // Show watermark for PDFs
                 const pdfUrl = ASSET_MAP[type];
                 
                 body.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-family: \'Klee One\', cursive; font-size: 20px; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; letter-spacing: 2px;">載入資源中...</div>';
@@ -1120,7 +1074,6 @@
                     renderAllPages(); // Start in scrolling mode
                 });
             } else if (type === 'video') {
-                watermarkContainer.classList.add('active'); // Show watermark for video
                 body.innerHTML = `
                     <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
                         <div style="width: 100%; max-width: 900px; position: relative; padding-top: 40px;">
@@ -1199,10 +1152,8 @@
         function closeModal() {
             const modal = document.getElementById('assetModal');
             const body = document.getElementById('modalBody');
-            const watermark = document.getElementById('watermark');
             
             modal.classList.remove('active');
-            watermark.classList.remove('active');
             body.innerHTML = '';
             document.getElementById('pdfControls').style.display = 'none';
             pdfDoc = null;
