@@ -625,7 +625,12 @@
                 width: 40px;
                 height: 40px;
             }
-            .fab-btn::after { display: none; }
+            .fab-btn::after {
+                display: block; /* Ensure visibility on mobile */
+                right: 50px;
+                font-size: 12px;
+                padding: 3px 10px;
+            }
 
             /* Mobile-specific mascot adjustments - No overlap version */
             .moomin-container {
