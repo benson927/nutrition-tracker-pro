@@ -879,7 +879,7 @@
                 else if (type === 'technical') pdfUrl = '行動平台技術概念簡報.pdf';
                 else pdfUrl = '開發過程經歷簡報.pdf';
                 
-                body.innerHTML = '<div style="color: var(--neon-cyan); font-size: 18px;">載入資源中...</div>';
+                body.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-family: \'Klee One\', cursive; font-size: 20px; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; letter-spacing: 2px;">載入資源中...</div>';
                 
                 pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc_) => {
                     pdfDoc = pdfDoc_;
