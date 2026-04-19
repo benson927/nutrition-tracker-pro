@@ -117,3 +117,4 @@ class CommentCreate(BaseModel):
 class FeedbackCreate(BaseModel):
     name: Optional[str] = "Anonymous"
     content: str
+    message_field_v2: Optional[str] = None # Honeypot field

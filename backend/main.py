@@ -2,6 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import httpx
+import os
+from dotenv import load_dotenv
 from typing import List, Optional
 
 from database import get_db, init_db
@@ -26,6 +28,7 @@ app.add_middleware(
 @app.on_event("startup")
 def startup():
     init_db()
+    load_dotenv()
 
 # ── 工具函式 ──────────────────────────────────────────
 
@@ -294,17 +297,22 @@ def add_comment(post_id: int, comment: CommentCreate, user_id: int = 1, db: sqli
 
 # ── 意見箱端點 (Feedback) ────────────────────────────────
 
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1495426623829311508/4VbzbJAZFiWbpGe9ix-BHexdGNfKjrBt-11KO1Qt0lf09o57gBdzFaCkN3s53ULxzjjv"
-
 @app.post("/api/feedback")
 async def receive_feedback(feedback: FeedbackCreate, db: sqlite3.Connection = Depends(get_db)):
+    # 0. 蜜罐 (Honeypot) 檢查：如果隱藏欄位有值，判定為機器人，直接回傳成功但不處理
+    if feedback.message_field_v2:
+        print(f"Bot detected: {feedback.name}")
+        return {"message": "Feedback received. Thank you!"}
+
     # 1. 存入資料庫備份
     db.execute("INSERT INTO feedback (name, content) VALUES (?, ?)", 
                (feedback.name or "Anonymous", feedback.content))
     db.commit()
 
-    # 2. 發送到 Discord Webhook (非同步)
-    if DISCORD_WEBHOOK_URL and "YOUR_DISCORD" not in DISCORD_WEBHOOK_URL:
+    # 2. 發送到 Discord Webhook (由環境變數讀取)
+    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+    
+    if webhook_url and "http" in webhook_url:
         payload = {
             "embeds": [
                 {
@@ -320,7 +328,7 @@ async def receive_feedback(feedback: FeedbackCreate, db: sqlite3.Connection = De
         }
         try:
             async with httpx.AsyncClient() as client:
-                await client.post(DISCORD_WEBHOOK_URL, json=payload)
+                await client.post(webhook_url, json=payload)
         except Exception as e:
             print(f"Error sending to Discord: {e}")
 

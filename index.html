@@ -835,6 +835,8 @@
                 <i class="fa-solid fa-comment-dots" style="color: var(--neon-blue);"></i> 意見箱
             </div>
             <input type="text" id="feedbackName" class="feedback-input" placeholder="您的稱呼 (選填)">
+            <!-- Honeypot field (hidden from humans) -->
+            <input type="text" id="message_field_v2" style="display:none !important" tabindex="-1" autocomplete="off">
             <textarea id="feedbackContent" class="feedback-textarea" placeholder="請輸入您的建議或想說的話..."></textarea>
             <button class="feedback-submit" id="feedbackSubmit" onclick="sendFeedback()">
                 <i class="fa-solid fa-paper-plane"></i> 傳送意見
@@ -1129,10 +1131,12 @@
         async function sendFeedback() {
             const nameInput = document.getElementById('feedbackName');
             const contentInput = document.getElementById('feedbackContent');
+            const honeypotInput = document.getElementById('message_field_v2');
             const submitBtn = document.getElementById('feedbackSubmit');
             
             const name = nameInput.value.trim();
             const content = contentInput.value.trim();
+            const honeypot = honeypotInput.value;
 
             if (!content) {
                 alert("請輸入建議內容！");
@@ -1148,7 +1152,11 @@
                 const response = await fetch('http://localhost:8000/api/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: name || "Anonymous", content: content })
+                    body: JSON.stringify({ 
+                        name: name || "Anonymous", 
+                        content: content,
+                        message_field_v2: honeypot 
+                    })
                 });
 
                 if (response.ok) {

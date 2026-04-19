@@ -3,6 +3,8 @@ node_modules/
 dist/
 dist-ssr/
 *.local
+.env
+.env.*
 
 # Python environment
 backend/venv/
