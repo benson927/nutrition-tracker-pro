@@ -22,6 +22,44 @@
             --neon-indigo: #81ecec;
         }
 
+        /* 🛡️ Security & Watermark Styles */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1005;
+            display: none;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            opacity: 0.15;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            padding: 50px;
+        }
+
+        .watermark.active {
+            display: flex;
+        }
+
+        .watermark-text {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 22px;
+            color: #fff;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+            margin: 40px;
+        }
+
+        .no-select {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -815,7 +853,7 @@
             <div class="thumbtack"></div>
             
             <!-- Development History Button -->
-            <a href="開發過程經歷簡報.pdf" target="_blank" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
+            <a href="javascript:void(0)" onclick="openModal(event, 'history')" class="fab-btn" title="開發歷程紀錄">
                 <i class="fa-solid fa-scroll"></i>
             </a>
 
@@ -831,16 +869,16 @@
             <p class="subtitle">行動平台與成果展示入口</p>
             
             <div class="button-grid">
-                <a href="行動平台動機與理念簡報.pdf#view=Fit" target="_blank" onclick="openModal(event, 'motivation')" class="btn btn-blue">
+                <a href="javascript:void(0)" onclick="openModal(event, 'motivation')" class="btn btn-blue">
                     <i class="fa-solid fa-lightbulb"></i> 動機與理念簡報
                 </a>
-                <a href="行動平台技術概念簡報.pdf#view=Fit" target="_blank" onclick="openModal(event, 'technical')" class="btn btn-purple">
+                <a href="javascript:void(0)" onclick="openModal(event, 'technical')" class="btn btn-purple">
                     <i class="fa-solid fa-gears"></i> 技術概念簡報
                 </a>
                 <a href="https://github.com/benson927/nutrition-tracker-pro" target="_blank" onclick="openModal(event, 'github')" class="btn btn-indigo">
                     <i class="fa-brands fa-github"></i> GitHub 專案原始碼
                 </a>
-                <a href="行動平台影片v2.mp4" target="_blank" onclick="openModal(event, 'video')" class="btn btn-pink">
+                <a href="javascript:void(0)" onclick="openModal(event, 'video')" class="btn btn-pink">
                     <i class="fa-solid fa-play"></i> 操作演示影片
                 </a>
                 <a href="gallery.html" target="_blank" onclick="openModal(event, 'gallery')" class="btn btn-gallery">
@@ -877,7 +915,10 @@
 
     <!-- Universal Modal -->
     <div id="assetModal" class="modal" onclick="closeModal()">
-        <div id="modalContainer" class="modal-container" onclick="event.stopPropagation()">
+        <div id="modalContainer" class="modal-container no-select" onclick="event.stopPropagation()">
+            <!-- Watermark Overlay -->
+            <div id="watermark" class="watermark"></div>
+            
             <div class="modal-header-actions">
                 <button id="fullscreenBtn" class="action-btn btn-fullscreen" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
                 <button class="action-btn btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -904,6 +945,28 @@
             canvas = null,
             ctx = null,
             currentType = null;
+
+        // 🛡️ Asset Protection Config
+        const ASSET_MAP = {
+            'motivation': '行動平台動機與理念簡報.pdf',
+            'technical': '行動平台技術概念簡報.pdf',
+            'history': '開發過程經歷簡報.pdf',
+            'video': '行動平台影片v2.mp4'
+        };
+
+        // Initialize Watermark
+        const watermarkContainer = document.getElementById('watermark');
+        for (let i = 0; i < 20; i++) {
+            const span = document.createElement('span');
+            span.className = 'watermark-text';
+            span.innerText = '© 2026 Benson Hong - Preview Only';
+            watermarkContainer.appendChild(span);
+        }
+
+        // Disable interaction inside modal
+        const modalContainer = document.getElementById('modalContainer');
+        modalContainer.addEventListener('contextmenu', e => e.preventDefault());
+        modalContainer.addEventListener('dragstart', e => e.preventDefault());
 
         // Render a single page (used in Fullscreen/Slide mode)
         function renderSinglePage(num) {
@@ -1045,10 +1108,8 @@
                     <h2 class="qr-title" style="color: rgba(255,255,255,0.8); margin-bottom: 15px; font-size: 32px; font-family: 'Klee One', cursive; transition: all 0.4s ease; letter-spacing: 2px;">即刻體驗</h2>
                     <p class="qr-desc" style="color: rgba(255,255,255,0.5); font-size: 18px; font-family: 'Klee One', cursive; transition: all 0.4s ease; letter-spacing: 1.5px;">請掃描 QR Code 隨時同步觀看內容</p></div>`;
             } else if (type === 'motivation' || type === 'technical' || type === 'history') {
-                let pdfUrl;
-                if (type === 'motivation') pdfUrl = '行動平台動機與理念簡報.pdf';
-                else if (type === 'technical') pdfUrl = '行動平台技術概念簡報.pdf';
-                else pdfUrl = '開發過程經歷簡報.pdf';
+                watermarkContainer.classList.add('active'); // Show watermark for PDFs
+                const pdfUrl = ASSET_MAP[type];
                 
                 body.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-family: \'Klee One\', cursive; font-size: 20px; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; letter-spacing: 2px;">載入資源中...</div>';
                 
@@ -1059,11 +1120,12 @@
                     renderAllPages(); // Start in scrolling mode
                 });
             } else if (type === 'video') {
+                watermarkContainer.classList.add('active'); // Show watermark for video
                 body.innerHTML = `
                     <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
                         <div style="width: 100%; max-width: 900px; position: relative; padding-top: 40px;">
                             <video id="demo-video" controls autoplay style="width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                                <source src="行動平台影片v2.mp4" type="video/mp4">
+                                <source src="${ASSET_MAP['video']}" type="video/mp4">
                             </video>
                             <h2 style="color: rgba(255,255,255,0.7); margin-top: 25px; text-align: center; font-size: 24px; font-family: 'Klee One', cursive; letter-spacing: 2px;">操作演示影片</h2>
                         </div>
@@ -1135,11 +1197,19 @@
         }
 
         function closeModal() {
-            document.getElementById('assetModal').classList.remove('active');
-            document.getElementById('modalBody').innerHTML = '';
+            const modal = document.getElementById('assetModal');
+            const body = document.getElementById('modalBody');
+            const watermark = document.getElementById('watermark');
+            
+            modal.classList.remove('active');
+            watermark.classList.remove('active');
+            body.innerHTML = '';
             document.getElementById('pdfControls').style.display = 'none';
             pdfDoc = null;
-            if (document.fullscreenElement) document.exitFullscreen();
+            
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
         }
 
         function toggleFullscreen() {
