@@ -657,12 +657,30 @@ function App() {
           <div style={{ width: '100%' }}><Forum userId={currentUserId || 1} /></div>
         )}
       </main>
+      <footer className="footer" style={{
+        marginTop: '4rem',
+        padding: '2.5rem 0',
+        textAlign: 'center',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        color: 'rgba(255,255,255,0.3)',
+        fontSize: '0.9rem',
+        letterSpacing: '1px'
+      }}>
+        © 2026 Benson Hong. Developed with ❤️ by Antigravity.
+      </footer>
       <style>{`
         .left-column { grid-column: 1; } 
         .right-column { grid-column: 2; }
         @media (max-width: 1024px) { 
           main { grid-template-columns: 1fr !important; gap: 1.5rem !important; } 
           .left-column, .right-column { grid-column: 1 / -1; } 
+        }
+        .footer {
+          width: 100%;
+          transition: all 0.3s ease;
+        }
+        .footer:hover {
+          color: rgba(255,255,255,0.5);
         }
       `}</style>
     </div>
