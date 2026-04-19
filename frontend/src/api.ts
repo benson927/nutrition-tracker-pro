@@ -1,6 +1,6 @@
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://127.0.0.1:8000/api'
-  : 'https://nutrition-tracker-pro-api.onrender.com/api'; // 請替換為您在 Render 部署後的實際網址
+  : 'https://nutrition-tracker-pro.onrender.com/api';
 
 // ── 權限管理 ──────────────────────────────────────────
 

@@ -1151,7 +1151,7 @@
                 // 自動切換正式與本地 API 地址
                 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
                     ? 'http://127.0.0.1:8000/api'
-                    : 'https://nutrition-tracker-pro-api.onrender.com/api';
+                    : 'https://nutrition-tracker-pro.onrender.com/api';
                 
                 const response = await fetch(`${API_BASE}/feedback`, {
                     method: 'POST',
