@@ -850,7 +850,7 @@
             
             if (isTouchDevice || isSmallScreen) {
                 // Mobile behavior: Open PDFs and Gallery in new tab
-                if (type === 'motivation' || type === 'technical' || type === 'gallery') return; 
+                if (type === 'motivation' || type === 'technical' || type === 'gallery' || type === 'history') return; 
                 if (type === 'qr' || type === 'video') event.preventDefault();
             } else {
                 if (type !== 'github') event.preventDefault();
