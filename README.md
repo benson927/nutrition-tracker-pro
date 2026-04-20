@@ -18,6 +18,9 @@
 
 **Nutrition Tracker Pro** 是一款專為追求極致美感與功能平衡的使用者設計的健康追蹤系統。本專案將前衛的 **Liquid Glass (液態玻璃)** 視覺語彙與 **手繪筆記 (Hand-drawn Sketch)** 的溫暖風格結合，創造出既專業又具有親和力的設計體驗。
 
+> [!NOTE]
+> **獨立開發聲明 (Development Note)**：本專案之**前端介面 (Frontend)** 與 **後端架構 (Backend)** 均由本人獨立設計與開發完成。
+
 ### ☁️ 雲端賦能 (Cloud-Powered)
 目前系統已全面完成雲端遷移，不再依賴本地存儲。後端託管於 **Render**，並採用 **Supabase (PostgreSQL)** 進行全雲端數據儲存，保證您的健康數據隨時隨地保持同步。
 

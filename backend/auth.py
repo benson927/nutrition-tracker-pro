@@ -1,10 +1,18 @@
+import os
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from dotenv import load_dotenv
+
+# 優先載入環境變數
+load_dotenv()
 
 # ── 安全性設定 ──────────────────────────────────────────
-SECRET_KEY = "your-secret-key-nutrition-app" # 在生產環境中應使用環境變數
+# 從環境變數讀取金鑰，如果沒設定則給予警告（生產環境務必設定）
+SECRET_KEY = os.getenv("SECRET_KEY", "DEVELOPMENT_INSECURE_KEY_REPLACE_ME")
+if SECRET_KEY == "DEVELOPMENT_INSECURE_KEY_REPLACE_ME":
+    print("WARNING: SECRET_KEY not set in environment! JWT sessions are insecure.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 24 小時
 
