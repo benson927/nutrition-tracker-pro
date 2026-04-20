@@ -80,11 +80,11 @@
 
 ## 📽️ 功能演示 (Feature Demo)
 
-如果您想快速了解系統的操作流程，請觀看下方的實機錄影：
+如果您想快速了解系統的操作流程，請觀看下方的實機錄影（點擊圖片播放）：
 
-![操作演示](./demo-video.mp4)
+[![操作演示影片](./video-thumbnail.png)](https://github.com/benson927/nutrition-tracker-pro/raw/main/demo-video.mp4)
 
-> (註：若 GitHub 預覽未正常顯示，請按此 [直接下載/觀看影片](./demo-video.mp4))
+> (註：若點擊圖片後未自動播放，請按此 [直接觀看/下載影片](./demo-video.mp4))
 
 ---
 
