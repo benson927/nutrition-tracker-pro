@@ -82,9 +82,9 @@
 
 如果您想快速了解系統的操作流程，請觀看下方的實機錄影：
 
-https://github.com/benson927/nutrition-tracker-pro/assets/行動平台影片v2.mp4
+<video src="https://github.com/benson927/nutrition-tracker-pro/raw/main/行動平台影片v2.mp4" width="100%" controls></video>
 
-> (註：若 GitHub 預覽未正常顯示，請直接查看 [行動平台影片v2.mp4](./行動平台影片v2.mp4))
+> (註：若 GitHub 預覽未正常顯示，請按此 [直接下載/觀看影片](./行動平台影片v2.mp4))
 
 ---
 
