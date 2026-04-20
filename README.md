@@ -84,7 +84,7 @@
 
 [![操作演示影片](./picture.jpg)](https://github.com/benson927/nutrition-tracker-pro/raw/main/demo-video.mp4)
 
-> (註：若點擊圖片後未自動播放，請按此 [直接觀看/下載影片](./demo-video.mp4))
+> (註：影片檔案較大 (約 20MB)，若 GitHub 無法直接預覽，請按此 [直接下載/觀看演示影片](https://github.com/benson927/nutrition-tracker-pro/raw/main/demo-video.mp4))
 
 ---
 
